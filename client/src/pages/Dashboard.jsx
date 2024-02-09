@@ -1,31 +1,33 @@
-import React, { useState } from "react";
-import FileUpload from "../Components/file-upload/FileUpload";
+// Dashboard.jsx
+import React from "react";
+import { Grid, GridItem } from "@chakra-ui/react";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
+import UploadZone from "../Components/UploadZone";
 
 const Dashboard = () => {
-  const [newUserInfo, setNewUserInfo] = useState({
-    profileImages: [],
-  });
-
-  const updateUploadedFiles = (files) =>
-    setNewUserInfo({ ...newUserInfo, profileImages: files });
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    //logic to create new user...
-  };
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <FileUpload
-          accept=".jpg,.png,.jpeg"
-          label="Profile Image(s)"
-          multiple
-          updateFilesCb={updateUploadedFiles}
-        />
-        <button type="submit">Create New User</button>
-      </form>
-    </div>
+    <Grid
+      templateAreas={`"header header"
+                  "nav main"
+                  "footer footer"`}
+      gridTemplateRows={"50px 1fr 30px"}
+      gridTemplateColumns={"150px 1fr"}
+      height="100vh"
+      gap="1"
+      color="blackAlpha.700"
+      fontWeight="bold"
+    >
+      <GridItem area={"header"}>
+        <Navbar />
+      </GridItem>
+      <GridItem area={"main"}>
+        <UploadZone />
+      </GridItem>
+      <GridItem area={"footer"}>
+        <Footer />
+      </GridItem>
+    </Grid>
   );
 };
 

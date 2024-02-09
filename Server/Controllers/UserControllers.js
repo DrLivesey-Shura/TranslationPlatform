@@ -1,12 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken.js");
-const User = require("../Models/UserModel.js");
+const { User } = require("../Models/UserModel.js");
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, username, email, password, pic } = req.body;
+  const { name, username, email, password, adress, birthDay, phone, pic } =
+    req.body;
 
-  if (!(name || username || email || password)) {
+  if (!(name || username || email || password || adress || birthDay || phone)) {
     res.status(400);
     throw new Error("Please Enter All The Fields!");
   }
@@ -28,6 +29,9 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
+    adress,
+    birthDay,
+    phone,
     pic,
   });
   if (user) {
@@ -36,6 +40,9 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
+      adress: user.adress,
+      birthDay: user.birthDay,
+      phone: user.phone,
       pic: user.pic,
       token: generateToken(user._id),
     });

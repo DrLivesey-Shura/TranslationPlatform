@@ -12,7 +12,7 @@ const routes = new Router();
 // Add routes
 routes.post("/", registerUser);
 routes.post("/login", loginUser);
-routes.get("/", protect, getAllUsers);
+routes.get("/", getAllUsers);
 routes.put("/:id", editUserInfo);
 
 module.exports = routes;

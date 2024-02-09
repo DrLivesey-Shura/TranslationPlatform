@@ -1,17 +1,20 @@
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Auth from "./pages/Auth";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Register from "./Pages/Register";
+import Login from "./Pages/Login";
+import Home from "./Pages/Home";
+import Dashboard from "./Pages/Dashboard";
 
 function App() {
   return (
-    // <Auth />
-    <Routes>
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
