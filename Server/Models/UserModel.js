@@ -33,6 +33,19 @@ const userSchema = mongoose.Schema(
   }
 );
 
+userSchema.pre("findOneAndRemove", async function (next) {
+  const user = this; // 'this' refers to the document being removed
+
+  // Access the user's uploads and remove the associated upload from the Upload schema
+  await Promise.all(
+    user.uploads.map(async (upload) => {
+      await mongoose.model("Upload").findByIdAndRemove(upload._id);
+    })
+  );
+
+  next();
+});
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();

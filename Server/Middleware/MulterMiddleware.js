@@ -12,7 +12,13 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+  const allowedFileTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+  ];
+
   if (allowedFileTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
@@ -20,6 +26,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const uploadMiddleware = multer({ storage, fileFilter });
+const uploadMiddleware = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB file size limit (adjust as needed)
+    files: 5, // Maximum 5 files in one request (adjust as needed)
+  },
+});
 
 module.exports = uploadMiddleware;
