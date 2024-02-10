@@ -13,8 +13,13 @@ router.post("/", uploadMiddleware.single("photo"), async (req, res) => {
   try {
     const userId = req.body.userId;
     const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).send({ message: "User not found" });
+    }
+
+    if (!req.body.photo) {
+      return res.status(400).send({ message: "Photo is required" });
     }
     const photo = req.body.photo;
 
