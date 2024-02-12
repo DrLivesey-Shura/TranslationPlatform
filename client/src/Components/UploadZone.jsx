@@ -1,14 +1,15 @@
-import { Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { Box, Button, Input, useColorModeValue } from "@chakra-ui/react";
+import { MDBFile } from "mdb-react-ui-kit";
 
-const UploadZone = () => {
+const UploadZone = ({ user, onUpload }) => {
   const [file, setFiles] = useState();
-
-  const user = JSON.parse(localStorage.getItem("userInfo"));
 
   const handleUpload = async () => {
     console.log(user);
+    console.log(file);
     if (!file) {
       console.log("No file selected");
       return;
@@ -19,24 +20,41 @@ const UploadZone = () => {
         photo: file.name,
         userId: user._id,
       });
-      console.log(response);
       console.log("Upload successful:", response.data);
+      onUpload();
     } catch (error) {
       console.error("Error uploading file:", error);
     }
   };
 
   return (
-    <div>
-      <h1>Uploading files in React</h1>
-      <input
+    <Box my="25px">
+      <Input
+        color="#FFFFFFCC"
+        width="350px"
+        variant="flushed"
         type="file"
         onChange={(e) => {
           setFiles(e.target.files[0]);
         }}
       />
-      <Button onClick={handleUpload}>Upload</Button>
-    </div>
+
+      <Button
+        _hover={{ bgColor: "none" }}
+        bg="none"
+        color="none"
+        onClick={handleUpload}
+      >
+        <AiFillPlusCircle
+          bg="none"
+          size="45px"
+          color="purple"
+          _hover={{ bgColor: "#80008099" }}
+          _active={{ bgColor: "none" }}
+          _focus={{ bgColor: "none" }}
+        />
+      </Button>
+    </Box>
   );
 };
 

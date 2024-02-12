@@ -9,16 +9,22 @@ import {
   useDisclosure,
   Button,
   Icon,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-
+import { Logo } from "../assets/Logo";
 const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button onClick={onOpen}>
-        <HamburgerIcon />
+      <Button
+        _hover={{ bgColor: "none" }}
+        border="none"
+        bg="none"
+        onClick={onOpen}
+      >
+        <Logo />
       </Button>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />

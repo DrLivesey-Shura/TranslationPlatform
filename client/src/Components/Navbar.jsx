@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   HStack,
-  Text,
   IconButton,
   Button,
   Menu,
@@ -21,16 +20,15 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NavLink from "./NavLink";
 import Sidebar from "./Sidebar";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import Footer from "./Footer";
 
 const Links = ["Dashboard", "My Uploads", "Contact Us"];
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box bg={useColorModeValue("gray.100", "gray.900")} w="100%" px="8px">
+    <Box bg={useColorModeValue("#ffffffcc", "gray.900")} w="100vw" px="8px">
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <IconButton
           size={"md"}
@@ -44,32 +42,41 @@ const Navbar = () => {
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
               <NavLink
-                color={useColorModeValue("black", "white")}
+                color={useColorModeValue("black", "#ffffffcc")}
                 links={link}
                 key={link}
               />
             ))}
           </HStack>
-          <Button onClick={toggleColorMode}>
+          <Button
+            _hover={{ bgColor: "none" }}
+            _focus={{ bgColor: "none" }}
+            bg="none"
+            onClick={toggleColorMode}
+          >
             {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
         </HStack>
         <Flex alignItems={"center"}>
           <Menu>
-            <MenuButton
-              as={Button}
-              rounded={"full"}
-              variant={"link"}
-              cursor={"pointer"}
-              minW={0}
+            <Box
+              color={useColorModeValue("black", "#FFFFFFEB")}
+              display="flex"
+              alignItems="center"
+              mx="12px"
             >
-              <Avatar
-                size={"md"}
-                src={
-                  "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                }
-              />
-            </MenuButton>
+              Hello {user.name}
+              <MenuButton
+                mx="12px"
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
+                <Avatar size={"md"} src={user.pic} />
+              </MenuButton>
+            </Box>
 
             <MenuList color={useColorModeValue("black", "white")}>
               <MenuItem>Profile</MenuItem>

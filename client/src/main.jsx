@@ -11,11 +11,13 @@ const theme = extendTheme({
   styles: {
     global: (props) => ({
       body: {
-        bg: mode("white", "darkColor")(props),
+        bg: mode("transparent", "darkColor")(props),
         backgroundImage: `url(${backgroundSvg})`,
         backgroundSize: "cover",
+        height: "100%",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
+        backgroundAttachment: "fixed",
         minHeight: "100vh",
       },
     }),

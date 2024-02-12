@@ -16,7 +16,7 @@ const Footer = () => {
     <Box
       w="100%"
       px="8px"
-      bg={useColorModeValue("gray.50", "gray.900")}
+      bg={useColorModeValue("#ffffffcc", "#171923cc")}
       color={useColorModeValue("black", "white")}
     >
       <Container
@@ -27,7 +27,7 @@ const Footer = () => {
         justify={{ base: "center", md: "center" }}
         align={{ base: "center", md: "center" }}
       >
-        <Text>© 2022 Chakra Templates. All rights reserved</Text>
+        <Text>© 2024 WE ARE WE. All rights reserved</Text>
       </Container>
     </Box>
   );

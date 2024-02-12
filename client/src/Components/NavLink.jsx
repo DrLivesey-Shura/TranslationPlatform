@@ -14,7 +14,7 @@ const NavLink = ({ color, links }) => {
         transition: "0.5s",
       }}
       _focus={{ outline: "none", boxShadow: "outline" }}
-      _active={{ textDecoration: "underline", color: "red" }}
+      _active={{ textDecoration: "underline", color: "cyan" }}
       color={color}
       href={"#"}
     >
