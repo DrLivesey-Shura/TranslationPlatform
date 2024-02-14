@@ -42,9 +42,12 @@ const Login = () => {
         { email, password },
         config
       );
-
       localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/dashboard");
+      if (data.isAdmin) {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/user-dashboard");
+      }
     } catch (error) {
       toast({
         title: "error conect.",

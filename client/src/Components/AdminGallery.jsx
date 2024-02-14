@@ -8,37 +8,39 @@ import {
   SimpleGrid,
   Text,
   useColorModeValue,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef, useState } from "react";
 
-const Gallery = ({ files, onDelete, user }) => {
+const AdminGallery = ({ files, onDelete, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
   const [selectedUploadId, setSelectedUploadId] = useState(null);
+  const [uploaderInfo, setUploaderInfo] = useState();
 
-  const handleDelete = async () => {
+  const handleUploaderInfo = async (uploadId) => {
+    setSelectedUploadId(uploadId);
+    await fetchUploaderInfo(uploadId);
+    onOpen();
+  };
+
+  const fetchUploaderInfo = async (uploadId) => {
     try {
-      const response = await axios.delete(
-        `/api/upload/delete/${selectedUploadId}`,
-        {
-          data: { userId: user._id },
-        }
-      );
-
+      const response = await axios.get(`/api/user/byupload/${uploadId}`);
       if (response.status === 200) {
-        onDelete(selectedUploadId);
+        setUploaderInfo(response.data);
       }
     } catch (error) {
-      console.error("Error deleting upload:", error);
+      console.error("Error fetching uploader info:", error);
     }
   };
 
@@ -80,18 +82,16 @@ const Gallery = ({ files, onDelete, user }) => {
                 </Text>
               </CardBody>
               <CardFooter justifyItems="center" justifyContent="center">
-                <Button width="100px" mr="12px" bg="#3887BE">
+                <Button color="white" width="100px" mr="12px" bg="#3887BE">
                   Download
                 </Button>
                 <Button
-                  width="100px"
+                  onClick={() => handleUploaderInfo(_id)}
+                  color="white"
+                  width="fit-content"
                   bg="rebeccapurple"
-                  onClick={() => {
-                    setSelectedUploadId(_id);
-                    onOpen();
-                  }}
                 >
-                  Delete
+                  Uploader Informations
                 </Button>
               </CardFooter>
             </Card>
@@ -99,41 +99,29 @@ const Gallery = ({ files, onDelete, user }) => {
         ))}
       </AnimatePresence>
 
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete File
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={() => onClose()}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  handleDelete();
-                  onClose();
-                }}
-                ml={3}
-              >
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Uploader Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {uploaderInfo && (
+              <Box>
+                <Text>{uploaderInfo.name}</Text>
+                <Text>{uploaderInfo.email}</Text>
+                <Text>{uploaderInfo.phone}</Text>
+              </Box>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </SimpleGrid>
   );
 };
 
-export default Gallery;
+export default AdminGallery;

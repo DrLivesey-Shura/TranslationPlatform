@@ -6,6 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import backgroundSvg from "./assets/background.svg";
 import { mode } from "@chakra-ui/theme-tools";
+import { FileProvider } from "./Context/FileContext.jsx";
 
 const theme = extendTheme({
   styles: {
@@ -27,7 +28,9 @@ const theme = extendTheme({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App />
+      <FileProvider>
+        <App />
+      </FileProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

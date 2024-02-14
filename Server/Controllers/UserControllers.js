@@ -4,10 +4,30 @@ const generateToken = require("../utils/generateToken.js");
 const { User } = require("../Models/UserModel.js");
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, username, email, password, adress, birthDay, phone, pic } =
-    req.body;
+  const {
+    name,
+    username,
+    email,
+    password,
+    adress,
+    birthDay,
+    phone,
+    pic,
+    isAdmin,
+  } = req.body;
 
-  if (!(name || username || email || password || adress || birthDay || phone)) {
+  if (
+    !(
+      name ||
+      username ||
+      email ||
+      password ||
+      adress ||
+      birthDay ||
+      phone ||
+      isAdmin
+    )
+  ) {
     res.status(400);
     throw new Error("Please Enter All The Fields!");
   }
@@ -33,6 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
     birthDay,
     phone,
     pic,
+    isAdmin,
   });
   if (user) {
     res.status(201).json({
@@ -44,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
       birthDay: user.birthDay,
       phone: user.phone,
       pic: user.pic,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     });
   } else {
@@ -66,7 +88,12 @@ const loginUser = asyncHandler(async (req, res) => {
         name: user.name,
         username: user.username,
         email: user.email,
+        adress: user.adress,
+        birthDay: user.birthDay,
+        phone: user.phone,
+        uploads: user.uploads,
         pic: user.pic,
+        isAdmin: user.isAdmin,
         token: generateToken(user._id),
       });
     } else {
@@ -110,4 +137,36 @@ const editUserInfo = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getAllUsers, editUserInfo };
+const fetchUserInfoFromUpload = asyncHandler(async (req, res) => {
+  try {
+    const { uploadId } = req.params;
+
+    // Find the user associated with the given upload ID
+    const user = await User.findOne({ "uploads._id": uploadId });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found for the given upload ID" });
+    }
+
+    const userInfo = {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+    };
+
+    res.status(200).json(userInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getAllUsers,
+  editUserInfo,
+  fetchUserInfoFromUpload,
+};

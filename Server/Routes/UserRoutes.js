@@ -4,6 +4,7 @@ const {
   loginUser,
   getAllUsers,
   editUserInfo,
+  fetchUserInfoFromUpload,
 } = require("../Controllers/UserControllers");
 const { protect } = require("../Middleware/authMiddleware");
 
@@ -14,5 +15,6 @@ routes.post("/", registerUser);
 routes.post("/login", loginUser);
 routes.get("/", getAllUsers);
 routes.put("/:id", editUserInfo);
+routes.get("/byupload/:uploadId", fetchUserInfoFromUpload);
 
 module.exports = routes;

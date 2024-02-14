@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { AiFillPlusCircle } from "react-icons/ai";
-import { Box, Button, Input, useColorModeValue } from "@chakra-ui/react";
-import { MDBFile } from "mdb-react-ui-kit";
+import { Box, Button, Input } from "@chakra-ui/react";
 
 const UploadZone = ({ user, onUpload }) => {
   const [file, setFiles] = useState();

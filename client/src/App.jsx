@@ -3,7 +3,8 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
-import Dashboard from "./Pages/Dashboard";
+import UserDashboard from "./Pages/UserDashboard";
+import AdminDashboard from "./Pages/AdminDashboard";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/user-dashboard" element={<UserDashboard />} />
       </Routes>
     </BrowserRouter>
   );
