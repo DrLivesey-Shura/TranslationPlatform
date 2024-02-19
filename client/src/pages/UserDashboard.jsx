@@ -19,6 +19,7 @@ const UserDashboard = () => {
       navigate("/login");
       return null;
     }
+
     axios
       .get(`/api/upload/${user._id}`)
       .then((res) => {

@@ -35,7 +35,14 @@ const AdminGallery = ({ files, onDelete, user }) => {
 
   const fetchUploaderInfo = async (uploadId) => {
     try {
-      const response = await axios.get(`/api/user/byupload/${uploadId}`);
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      const response = await axios.get(
+        `/api/user/byupload/${uploadId}`,
+        config
+      );
       if (response.status === 200) {
         setUploaderInfo(response.data);
       }

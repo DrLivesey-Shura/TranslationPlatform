@@ -11,6 +11,30 @@ const uploadSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const translationDemandSchema = new mongoose.Schema(
+  {
+    uploadId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Upload",
+      required: true,
+    },
+    language: {
+      type: String,
+      required: true,
+    },
+    estimatedDate: {
+      type: Date,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
+  },
+  { timestamps: true }
+);
+
 const userSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -26,6 +50,7 @@ const userSchema = mongoose.Schema(
         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
     uploads: [uploadSchema],
+    translationDemands: [translationDemandSchema],
     isAdmin: { type: Boolean, default: false },
   },
   {
@@ -62,5 +87,9 @@ userSchema.pre("save", async function (next) {
 
 const User = mongoose.model("User", userSchema);
 const Upload = mongoose.model("Upload", uploadSchema);
+const translationDemand = mongoose.model(
+  "translationDemand",
+  translationDemandSchema
+);
 
-module.exports = { User, Upload };
+module.exports = { User, Upload, translationDemand };

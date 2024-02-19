@@ -11,13 +11,15 @@ const AdminDashboard = () => {
   const [files, setFiles] = useState([]);
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const navigate = useNavigate();
+
   const fetchFiles = () => {
     if (!user) {
       navigate("/login");
       return null;
     }
+    const config = { headers: { Authorization: `Bearer ${user.token}` } };
     axios
-      .get("/api/upload")
+      .get("/api/upload", config)
       .then((res) => {
         setFiles(res.data);
       })

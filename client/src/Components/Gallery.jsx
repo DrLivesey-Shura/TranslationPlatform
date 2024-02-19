@@ -19,19 +19,28 @@ import {
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef, useState } from "react";
+import TranslateModal from "./TranslateModal";
+import DeleteAlertDialog from "./DeleteAlertDialog";
 
 const Gallery = ({ files, onDelete, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
   const [selectedUploadId, setSelectedUploadId] = useState(null);
+  const [isTranslateModalOpen, setTranslateModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
       const response = await axios.delete(
         `/api/upload/delete/${selectedUploadId}`,
         {
           data: { userId: user._id },
-        }
+        },
+        config
       );
 
       if (response.status === 200) {
@@ -80,58 +89,42 @@ const Gallery = ({ files, onDelete, user }) => {
                 </Text>
               </CardBody>
               <CardFooter justifyItems="center" justifyContent="center">
-                <Button width="100px" mr="12px" bg="#3887BE">
-                  Download
+                <Button
+                  onClick={() => setTranslateModalOpen(true)}
+                  width="100px"
+                  mr="12px"
+                  bg="#3887BE"
+                >
+                  Translate
                 </Button>
+                <TranslateModal
+                  file={photo}
+                  isOpen={isTranslateModalOpen}
+                  onClose={() => setTranslateModalOpen(false)}
+                />
                 <Button
                   width="100px"
                   bg="rebeccapurple"
                   onClick={() => {
                     setSelectedUploadId(_id);
-                    onOpen();
+                    setDeleteDialogOpen(true);
                   }}
                 >
                   Delete
                 </Button>
+                <DeleteAlertDialog
+                  isOpen={isDeleteDialogOpen}
+                  onClose={() => setDeleteDialogOpen(false)}
+                  onDelete={() => {
+                    handleDelete();
+                    setDeleteDialogOpen(false);
+                  }}
+                />
               </CardFooter>
             </Card>
           </motion.div>
         ))}
       </AnimatePresence>
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete File
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={() => onClose()}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  handleDelete();
-                  onClose();
-                }}
-                ml={3}
-              >
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
     </SimpleGrid>
   );
 };

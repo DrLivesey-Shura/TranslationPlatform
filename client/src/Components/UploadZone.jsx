@@ -15,10 +15,18 @@ const UploadZone = ({ user, onUpload }) => {
     }
     console.log(file.name);
     try {
-      const response = await axios.post("/api/upload/", {
-        photo: file.name,
-        userId: user._id,
-      });
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      const response = await axios.post(
+        "/api/upload/",
+        {
+          photo: file.name,
+          userId: user._id,
+        },
+        config
+      );
       console.log("Upload successful:", response.data);
       onUpload();
     } catch (error) {

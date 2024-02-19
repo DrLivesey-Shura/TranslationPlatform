@@ -1,9 +1,9 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Link } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const NavLink = ({ color, links }) => {
   return (
-    <Box
+    <Link
       as="a"
       px={2}
       py={1}
@@ -19,7 +19,7 @@ const NavLink = ({ color, links }) => {
       href={"#"}
     >
       {links}
-    </Box>
+    </Link>
   );
 };
 

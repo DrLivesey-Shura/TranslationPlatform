@@ -15,13 +15,15 @@ import {
   useDisclosure,
   useColorMode,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NavLink from "./NavLink";
 import Sidebar from "./Sidebar";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import Profile from "./Profile";
 
-const Links = ["Dashboard", "My Uploads", "Contact Us"];
+const Links = ["My Uploads", "My Requests", "Contact Us"];
 
 const Navbar = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,7 +81,11 @@ const Navbar = ({ user }) => {
             </Box>
 
             <MenuList color={useColorModeValue("black", "white")}>
-              <MenuItem>Profile</MenuItem>
+              <MenuItem>
+                <Link>
+                  <Profile user={user} />
+                </Link>
+              </MenuItem>
               <MenuItem></MenuItem>
               <MenuDivider />
               <MenuItem>Sign out</MenuItem>
