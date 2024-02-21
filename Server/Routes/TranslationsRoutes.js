@@ -7,14 +7,16 @@ const {
   getTranslationDemandById,
   updateTranslationDemandById,
   deleteTranslationDemandById,
+  getUserTranslationDemand,
 } = require("../Controllers/TranslationsRequestsControllers");
 const routes = new Router();
 
 // Add routes
-routes.post("/translation-demands", createTranslationDemand);
-routes.get("/translation-demands", getAllTranslationDemands);
-routes.get("/translation-demands/:id", getTranslationDemandById);
-routes.put("/translation-demands/:id", updateTranslationDemandById);
-routes.delete("/translation-demands/:id", deleteTranslationDemandById);
+routes.post("/", createTranslationDemand);
+routes.get("/", getAllTranslationDemands);
+routes.get("/:id", getTranslationDemandById);
+routes.get("/user/:id", getUserTranslationDemand);
+routes.put("/:id", updateTranslationDemandById);
+routes.delete("/:id", deleteTranslationDemandById);
 
 module.exports = routes;

@@ -1,10 +1,10 @@
 // Dashboard.jsx
 import React, { useEffect, useState } from "react";
-import { Grid, GridItem } from "@chakra-ui/react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
+import Navbar from "../../Components/Navbar";
+import Footer from "../../Components/Footer";
 import axios from "axios";
-import AdminGallery from "../Components/AdminGallery";
+import AdminGallery from "../../Components/AdminGallery";
 import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
@@ -40,26 +40,9 @@ const AdminDashboard = () => {
   }
 
   return (
-    <Grid
-      templateAreas={`"header header"
-                  "nav main"
-                  "footer footer"`}
-      gridTemplateRows={"50px 1fr 30px"}
-      gridTemplateColumns={"150px 1fr"}
-      height="100vh"
-      gap="1"
-      fontWeight="bold"
-    >
-      <GridItem area={"header"}>
-        <Navbar user={user} />
-      </GridItem>
-      <GridItem area={"main"}>
-        <AdminGallery files={files} onDelete={handleUpload} user={user} />
-      </GridItem>
-      <GridItem area={"footer"}>
-        <Footer />
-      </GridItem>
-    </Grid>
+    <Box padding="20px">
+      <AdminGallery files={files} onDelete={handleUpload} user={user} />
+    </Box>
   );
 };
 

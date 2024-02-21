@@ -15,7 +15,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Logo } from "../assets/Logo";
+import { Logo } from "../../assets/Logo";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 

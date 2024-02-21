@@ -22,12 +22,19 @@ import NavLink from "./NavLink";
 import Sidebar from "./Sidebar";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import Profile from "./Profile";
+import { useNavigate } from "react-router-dom";
 
 const Links = ["My Uploads", "My Requests", "Contact Us"];
 
-const Navbar = ({ user }) => {
+const Navbar = ({ user, onNavLinkClick }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/login");
+  };
 
   return (
     <Box bg={useColorModeValue("#ffffffcc", "gray.900")} w="100vw" px="8px">
@@ -42,13 +49,45 @@ const Navbar = ({ user }) => {
         <HStack spacing={8} alignItems={"center"}>
           <Sidebar />
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            {Links.map((link) => (
+            {/* {Links.map((link) => (
               <NavLink
                 color={useColorModeValue("black", "#ffffffcc")}
                 links={link}
                 key={link}
               />
-            ))}
+            ))} */}
+            <Button
+              as="a"
+              px={2}
+              py={1}
+              rounded={"md"}
+              _hover={{
+                textDecoration: "underline",
+                textDecorationColor: "gray.700",
+                transition: "0.5s",
+              }}
+              _focus={{ outline: "none", boxShadow: "outline" }}
+              _active={{ textDecoration: "underline", color: "cyan" }}
+              onClick={() => onNavLinkClick("home")}
+            >
+              Dashboard
+            </Button>
+            <Button
+              as="a"
+              px={2}
+              py={1}
+              rounded={"md"}
+              _hover={{
+                textDecoration: "underline",
+                textDecorationColor: "gray.700",
+                transition: "0.5s",
+              }}
+              _focus={{ outline: "none", boxShadow: "outline" }}
+              _active={{ textDecoration: "underline", color: "cyan" }}
+              onClick={() => onNavLinkClick("requests")}
+            >
+              My Requests
+            </Button>
           </HStack>
           <Button
             _hover={{ bgColor: "none" }}
@@ -88,21 +127,11 @@ const Navbar = ({ user }) => {
               </MenuItem>
               <MenuItem></MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
       </Flex>
-
-      {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
-          <HStack as={"nav"} spacing={4} flexDirection="column">
-            {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
-            ))}
-          </HStack>
-        </Box>
-      ) : null}
     </Box>
   );
 };

@@ -2,6 +2,19 @@ import { Box, Link } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const NavLink = ({ color, links }) => {
+  const linksTags = (link) => {
+    switch (link) {
+      case "My Uploads":
+        return "user-dashboard";
+      case "My Requests":
+        return "my-requests";
+      case "Contact Us":
+        return "contact";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Link
       as="a"
@@ -16,7 +29,7 @@ const NavLink = ({ color, links }) => {
       _focus={{ outline: "none", boxShadow: "outline" }}
       _active={{ textDecoration: "underline", color: "cyan" }}
       color={color}
-      href={"#"}
+      href={`/${linksTags(links)}`}
     >
       {links}
     </Link>

@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./db.js");
 const UserRoutes = require("./Routes/UserRoutes.js");
 const UploadRoutes = require("./Routes/UploadRoutes.js");
+const TranslationsRoutes = require("./Routes/TranslationsRoutes.js");
 const app = express();
 const cors = require("cors");
 const colors = require("colors");
@@ -18,6 +19,7 @@ app.use(express.json());
 // Routes
 app.use("/user", UserRoutes);
 app.use("/upload", UploadRoutes);
+app.use("/translation-demands", TranslationsRoutes);
 
 // Connection
 const PORT = process.env.PORT || 5000;

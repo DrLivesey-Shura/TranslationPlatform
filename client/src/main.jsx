@@ -7,6 +7,8 @@ import { extendTheme } from "@chakra-ui/react";
 import backgroundSvg from "./assets/background.svg";
 import { mode } from "@chakra-ui/theme-tools";
 import { FileProvider } from "./Context/FileContext.jsx";
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const theme = extendTheme({
   styles: {

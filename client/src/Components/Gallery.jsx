@@ -26,9 +26,10 @@ const Gallery = ({ files, onDelete, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
   const [selectedUploadId, setSelectedUploadId] = useState(null);
-  const [isTranslateModalOpen, setTranslateModalOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+  const [isTranslateModalOpen, setTranslateModalOpen] = useState(
+    Array(files.length).fill(false)
+  );
   const handleDelete = async () => {
     try {
       const config = {
@@ -54,7 +55,7 @@ const Gallery = ({ files, onDelete, user }) => {
   return (
     <SimpleGrid my="20px" templateColumns="repeat(3, 1fr)">
       <AnimatePresence>
-        {files.map(({ photo, _id }) => (
+        {files.map(({ photo, _id }, index) => (
           <motion.div
             key={_id}
             className="box"
@@ -90,7 +91,11 @@ const Gallery = ({ files, onDelete, user }) => {
               </CardBody>
               <CardFooter justifyItems="center" justifyContent="center">
                 <Button
-                  onClick={() => setTranslateModalOpen(true)}
+                  onClick={() => {
+                    const updatedState = [...isTranslateModalOpen];
+                    updatedState[index] = true;
+                    setTranslateModalOpen(updatedState);
+                  }}
                   width="100px"
                   mr="12px"
                   bg="#3887BE"
@@ -98,9 +103,15 @@ const Gallery = ({ files, onDelete, user }) => {
                   Translate
                 </Button>
                 <TranslateModal
+                  user={user}
                   file={photo}
-                  isOpen={isTranslateModalOpen}
-                  onClose={() => setTranslateModalOpen(false)}
+                  fileID={_id}
+                  isOpen={isTranslateModalOpen[index]}
+                  onClose={() => {
+                    const updatedState = [...isTranslateModalOpen];
+                    updatedState[index] = false;
+                    setTranslateModalOpen(updatedState);
+                  }}
                 />
                 <Button
                   width="100px"

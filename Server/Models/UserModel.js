@@ -11,11 +11,18 @@ const uploadSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const Upload = mongoose.model("Upload", uploadSchema);
+
 const translationDemandSchema = new mongoose.Schema(
   {
     uploadId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Upload",
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     language: {
@@ -31,8 +38,17 @@ const translationDemandSchema = new mongoose.Schema(
       enum: ["Pending", "Approved", "Rejected"],
       default: "Pending",
     },
+    deletedFile: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
+);
+
+const translationDemand = mongoose.model(
+  "translationDemand",
+  translationDemandSchema
 );
 
 const userSchema = mongoose.Schema(
@@ -57,6 +73,7 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+const User = mongoose.model("User", userSchema);
 
 userSchema.pre("findOneAndRemove", async function (next) {
   const user = this; // 'this' refers to the document being removed
@@ -84,12 +101,5 @@ userSchema.pre("save", async function (next) {
     return next(error);
   }
 });
-
-const User = mongoose.model("User", userSchema);
-const Upload = mongoose.model("Upload", uploadSchema);
-const translationDemand = mongoose.model(
-  "translationDemand",
-  translationDemandSchema
-);
 
 module.exports = { User, Upload, translationDemand };

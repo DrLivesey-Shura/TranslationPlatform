@@ -34,6 +34,22 @@ const getTranslationDemandById = async (req, res) => {
   }
 };
 
+// Get translation demands for a specific user
+const getUserTranslationDemand = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const foundUserTranslationDemand = await translationDemand.find({
+      userId: id,
+    });
+    if (!foundUserTranslationDemand) {
+      return res.status(404).json({ error: "Translation Demand not found" });
+    }
+    res.status(200).json(foundUserTranslationDemand);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // Update a translation demand by ID
 const updateTranslationDemandById = async (req, res) => {
   const { id } = req.params;
@@ -74,4 +90,5 @@ module.exports = {
   getTranslationDemandById,
   updateTranslationDemandById,
   deleteTranslationDemandById,
+  getUserTranslationDemand,
 };

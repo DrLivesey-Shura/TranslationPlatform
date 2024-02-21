@@ -11,6 +11,17 @@ const fetchUploads = asyncHandler(async (req, res) => {
   }
 });
 
+const fetchUploadById = asyncHandler(async (req, res) => {
+  try {
+    const { fileId } = req.params;
+    const file = await Upload.findById(fileId);
+    res.send(file);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 const uploadFile = asyncHandler(async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -94,4 +105,5 @@ module.exports = {
   deleteUpload,
   fetchUploads,
   userUploads,
+  fetchUploadById,
 };

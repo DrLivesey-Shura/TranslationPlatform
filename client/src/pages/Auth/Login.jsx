@@ -14,7 +14,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Logo } from "../assets/Logo";
+import { Logo } from "../../assets/Logo";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -44,9 +44,9 @@ const Login = () => {
       );
       localStorage.setItem("userInfo", JSON.stringify(data));
       if (data.isAdmin) {
-        navigate("/admin-dashboard");
+        navigate("/");
       } else {
-        navigate("/user-dashboard");
+        navigate("/");
       }
     } catch (error) {
       toast({

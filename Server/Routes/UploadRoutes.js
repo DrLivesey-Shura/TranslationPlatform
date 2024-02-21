@@ -6,14 +6,16 @@ const {
   uploadFile,
   userUploads,
   deleteUpload,
+  fetchUploadById,
 } = require("../Controllers/UploadsControllers");
 
 const routes = new Router();
 
 // Add routes
 routes.get("/", fetchUploads);
+routes.get("/file/:fileId", fetchUploadById);
+routes.get("/:userId", userUploads);
 routes.post("/", uploadMiddleware.single("photo"), uploadFile);
 routes.delete("/delete/:uploadId", deleteUpload);
-routes.get("/:userId", userUploads);
 
 module.exports = routes;
