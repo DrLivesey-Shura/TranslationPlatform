@@ -1,6 +1,6 @@
 // Dashboard.jsx
 import React, { useEffect, useState } from "react";
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react";
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
 import axios from "axios";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const navigate = useNavigate();
 
@@ -23,7 +24,10 @@ const AdminDashboard = () => {
       .then((res) => {
         setFiles(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -40,8 +44,25 @@ const AdminDashboard = () => {
   }
 
   return (
-    <Box padding="20px">
-      <AdminGallery files={files} onDelete={handleUpload} user={user} />
+    <Box
+      display="flex"
+      justifyContent="center"
+      justifyItems="center"
+      mx="24px"
+      py="22px"
+    >
+      {loading ? (
+        <Spinner
+          mt="30px"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      ) : (
+        <AdminGallery files={files} onDelete={handleUpload} user={user} />
+      )}
     </Box>
   );
 };

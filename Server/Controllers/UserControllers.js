@@ -154,6 +154,7 @@ const fetchUserInfoFromUpload = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
+      pic: user.pic,
     };
 
     res.status(200).json(userInfo);

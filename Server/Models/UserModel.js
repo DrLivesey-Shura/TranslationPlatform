@@ -35,12 +35,22 @@ const translationDemandSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      enum: ["Pending", "Working", "Done"],
+      default: "Pending",
+    },
+
+    paymentStatus: {
+      type: String,
+      enum: ["Unpaid", "Verifying", "Verified", "Refused"],
+      default: "Unpaid",
+    },
+    adminValidationStatus: {
+      type: String,
       enum: ["Pending", "Approved", "Rejected"],
       default: "Pending",
     },
-    deletedFile: {
-      type: Boolean,
-      default: false,
+    adminValidationDate: {
+      type: Date,
     },
   },
   { timestamps: true }

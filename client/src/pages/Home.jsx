@@ -1,6 +1,6 @@
 // Dashboard.jsx
 import React, { useEffect, useState } from "react";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import axios from "axios";
@@ -13,6 +13,7 @@ import UserRequests from "./User/UserRequests";
 
 const Home = () => {
   const user = JSON.parse(localStorage.getItem("userInfo"));
+  const [loading, setLoading] = useState(true);
   const { userFiles, setUserFiles } = useFile();
   const navigate = useNavigate();
 
@@ -32,7 +33,10 @@ const Home = () => {
       .then((res) => {
         setUserFiles(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -79,7 +83,7 @@ const Home = () => {
   return (
     <Grid
       templateAreas={`"header header"
-                  "nav main"
+                  "main main"
                   "footer footer"`}
       gridTemplateRows={"50px 1fr 30px"}
       gridTemplateColumns={"150px 1fr"}
@@ -90,7 +94,20 @@ const Home = () => {
       <GridItem area={"header"}>
         <Navbar user={user} onNavLinkClick={handleNavLinkClick} />
       </GridItem>
-      <GridItem area={"main"}>{content}</GridItem>
+      {loading ? (
+        <Box mx="auto" py="22px">
+          <Spinner
+            mt="30px"
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Box>
+      ) : (
+        <GridItem area={"main"}>{content}</GridItem>
+      )}
       <GridItem area={"footer"}>
         <Footer />
       </GridItem>

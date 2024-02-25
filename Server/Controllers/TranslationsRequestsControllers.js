@@ -1,4 +1,4 @@
-const { translationDemand } = require("../Models/UserModel");
+const { translationDemand, Upload } = require("../Models/UserModel");
 
 // Create a new translation demand
 const createTranslationDemand = async (req, res) => {
@@ -13,7 +13,12 @@ const createTranslationDemand = async (req, res) => {
 // Get all translation demands
 const getAllTranslationDemands = async (req, res) => {
   try {
-    const allTranslationDemands = await translationDemand.find();
+    // Use populate to get related Upload information
+    const allTranslationDemands = await translationDemand
+      .find()
+      .populate("uploadId", "photo")
+      .populate("userId", "name pic email");
+
     res.status(200).json(allTranslationDemands);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });

@@ -23,13 +23,12 @@ import TranslateModal from "./TranslateModal";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 
 const Gallery = ({ files, onDelete, user }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
   const [selectedUploadId, setSelectedUploadId] = useState(null);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isTranslateModalOpen, setTranslateModalOpen] = useState(
     Array(files.length).fill(false)
   );
+
   const handleDelete = async () => {
     try {
       const config = {

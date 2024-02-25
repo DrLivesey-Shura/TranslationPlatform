@@ -7,23 +7,11 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import axios from "axios";
+import { Box, Spinner } from "@chakra-ui/react";
 
 const AdminRequests = ({ user }) => {
   const [translations, setTranslations] = useState([]);
-  const [uploaderInfo, setUploaderInfo] = useState({});
-
-  const fetchUploaderInfo = async (uploadId) => {
-    try {
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const response = await axios.get(
-        `/api/user/byupload/${uploadId}`,
-        config
-      );
-      setUploaderInfo(response.data);
-    } catch (error) {
-      console.error("Error fetching uploader info:", error);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,26 +20,109 @@ const AdminRequests = ({ user }) => {
           "/api/translation-demands/"
         );
         setTranslations(translationsResponse.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [user, translations]);
 
-  const handleDeleteRequest = async (translationId) => {
+  const handleRequestIsDone = async (translationDemandId) => {
     try {
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`/api/translation-demands/${translationId}`, config);
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
 
-      // Update the state by removing the deleted translation
-      setTranslations((prevTranslations) =>
-        prevTranslations.filter((dmnd) => dmnd._id !== translationId)
+      const response = await axios.put(
+        `/api/translation-demands/pay/${translationDemandId}`,
+        {
+          status: "Done",
+        },
+        config
       );
-      console.log("Translation demand deleted successfully");
+
+      if (response.status === 200) {
+        // Handle success, e.g., update state or perform additional actions
+        console.log("Translation demand refused and validated successfully");
+      }
     } catch (error) {
-      console.error("Error deleting translation demand:", error);
+      console.error("Error refusing and validating translation demand:", error);
+    }
+  };
+
+  const handleRefuseRequest = async (translationDemandId) => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      const response = await axios.put(
+        `/api/translation-demands/pay/${translationDemandId}`,
+        {
+          validationStatus: "Rejected",
+          paymentStatus: "Unpaid",
+          status: "Pending",
+        },
+        config
+      );
+
+      if (response.status === 200) {
+        // Handle success, e.g., update state or perform additional actions
+        console.log("Translation demand refused and validated successfully");
+      }
+    } catch (error) {
+      console.error("Error refusing and validating translation demand:", error);
+    }
+  };
+
+  const handleAcceptPayRequest = async (translationDemandId) => {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      const response = await axios.put(
+        `/api/translation-demands/pay/${translationDemandId}`,
+        {
+          validationStatus: "Approved",
+          paymentStatus: "Paid",
+          status: "Working",
+        },
+        config
+      );
+
+      if (response.status === 200) {
+        // Handle success, e.g., update state or perform additional actions
+        console.log("Translation demand accepted and validated successfully");
+      }
+    } catch (error) {
+      console.error(
+        "Error accepting and validating translation demand:",
+        error
+      );
+    }
+  };
+
+  const getButtonColor = (status) => {
+    switch (status) {
+      case "Pending":
+        return "primary";
+      case "Approved":
+        return "success";
+      case "Done":
+        return "success";
+      case "Rejected":
+        return "danger";
+      case "Unpaid":
+        return "danger";
+      case "Paid":
+        return "success";
+      case "Working":
+        return "primary";
+      default:
+        return "primary";
     }
   };
 
@@ -68,76 +139,126 @@ const AdminRequests = ({ user }) => {
   };
 
   return (
-    <>
-      <MDBTable className="text-white" align="middle">
-        <MDBTableHead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">File</th>
-            <th scope="col">Language</th>
-            <th scope="col">Estimated Date</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </MDBTableHead>
-        <MDBTableBody>
-          {translations.map((dmnd, index) => {
-            // Call the fetchUploaderInfo function for each translation
-            fetchUploaderInfo(dmnd.uploadId);
-
-            return (
-              <tr key={index}>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={uploaderInfo.pic}
-                      alt=""
-                      style={{ width: "45px", height: "45px" }}
-                      className="rounded-circle"
-                    />
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">{uploaderInfo.name}</p>
+    <Box
+      display="flex"
+      justifyContent="center"
+      justifyItems="center"
+      mx="24px"
+      py="22px"
+    >
+      {loading ? (
+        <Spinner
+          mt="30px"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      ) : (
+        <MDBTable className="text-white" align="middle">
+          <MDBTableHead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">File</th>
+              <th scope="col">Language</th>
+              <th scope="col">Estimated Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Payment</th>
+              <th scope="col">Admin Validation</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </MDBTableHead>
+          <MDBTableBody>
+            {translations.map((dmnd, index) => {
+              return (
+                <tr key={index}>
+                  <td>
+                    <div className="d-flex align-items-center">
+                      <img
+                        src={dmnd.userId.pic}
+                        alt=""
+                        style={{ width: "45px", height: "45px" }}
+                        className="rounded-circle"
+                      />
+                      <div className="ms-3">
+                        <p className="fw-bold mb-1">{dmnd.userId.name}</p>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    <p className="fw-bold mb-1">{dmnd.fileInfo?.photo}</p>
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    <p className="fw-bold mb-1">{dmnd.language}</p>
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    <p className="fw-bold mb-1">
-                      {formatEstimatedDate(dmnd.estimatedDate)}
-                    </p>
-                  </div>
-                </td>
-                <td>
-                  <MDBBadge color="success" pill>
-                    {dmnd.status}
-                  </MDBBadge>
-                </td>
-                <td>
-                  <MDBBtn
-                    onClick={() => handleDeleteRequest(dmnd._id)}
-                    color="link"
-                    rounded
-                    size="sm"
-                  >
-                    DELETE
-                  </MDBBtn>
-                </td>
-              </tr>
-            );
-          })}
-        </MDBTableBody>
-      </MDBTable>
-    </>
+                  </td>
+                  <td>
+                    <div>
+                      <p className="fw-bold mb-1">{dmnd.uploadId.photo}</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <p className="fw-bold mb-1">{dmnd.language}</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <p className="fw-bold mb-1">
+                        {formatEstimatedDate(dmnd.estimatedDate)}
+                      </p>
+                    </div>
+                  </td>
+                  <td>
+                    <MDBBadge color={getButtonColor(dmnd.status)} pill>
+                      {dmnd.status}
+                    </MDBBadge>
+                  </td>
+                  <td>
+                    <MDBBadge color={getButtonColor(dmnd.paymentStatus)} pill>
+                      {dmnd.paymentStatus}
+                    </MDBBadge>
+                  </td>
+                  <td>
+                    <MDBBadge
+                      color={getButtonColor(dmnd.adminValidationStatus)}
+                      pill
+                    >
+                      {dmnd.adminValidationStatus}
+                    </MDBBadge>
+                  </td>
+                  <td>
+                    {dmnd.adminValidationStatus == "Pending" ? (
+                      <>
+                        <MDBBtn
+                          onClick={() => handleRefuseRequest(dmnd._id)}
+                          color="link"
+                          rounded
+                          size="sm"
+                        >
+                          REFUSED
+                        </MDBBtn>
+                        <MDBBtn
+                          onClick={() => handleAcceptPayRequest(dmnd._id)}
+                          color="link"
+                          rounded
+                          size="sm"
+                        >
+                          ACCEPTED
+                        </MDBBtn>
+                      </>
+                    ) : (
+                      <MDBBtn
+                        onClick={() => handleRequestIsDone(dmnd._id)}
+                        color="link"
+                        rounded
+                        size="sm"
+                      >
+                        DONE
+                      </MDBBtn>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </MDBTableBody>
+        </MDBTable>
+      )}
+    </Box>
   );
 };
 
