@@ -1,5 +1,5 @@
 // Navbar.jsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -30,6 +30,27 @@ const Navbar = ({ user, onNavLinkClick }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
+  const company = {
+    name: "Merah Alaeddine",
+    ccp: "123123123123",
+  };
+  const handleProfileClick = () => {
+    setProfileModalOpen(true);
+  };
+
+  const handleCloseProfileModal = () => {
+    setProfileModalOpen(false);
+  };
+
+  const handleComapnyClick = () => {
+    setIsCompanyModalOpen(true);
+  };
+
+  const handleCloseCompanyModal = () => {
+    setIsCompanyModalOpen(false);
+  };
 
   const handleSignOut = () => {
     localStorage.removeItem("userInfo");
@@ -47,7 +68,7 @@ const Navbar = ({ user, onNavLinkClick }) => {
           onClick={isOpen ? onClose : onOpen}
         />
         <HStack spacing={8} alignItems={"center"}>
-          <Sidebar />
+          <Sidebar user={user} />
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {/* {Links.map((link) => (
               <NavLink
@@ -120,18 +141,25 @@ const Navbar = ({ user, onNavLinkClick }) => {
             </Box>
 
             <MenuList color={useColorModeValue("black", "white")}>
-              <MenuItem>
-                <Link>
-                  <Profile user={user} />
-                </Link>
-              </MenuItem>
-              <MenuItem></MenuItem>
+              <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={handleComapnyClick}>Our Company</MenuItem>
               <MenuDivider />
               <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
       </Flex>
+      <Profile
+        user={user}
+        isOpen={isProfileModalOpen}
+        onClose={handleCloseProfileModal}
+      />
+      <Profile
+        user={company}
+        isOpen={isCompanyModalOpen}
+        onClose={handleCloseCompanyModal}
+      />
     </Box>
   );
 };

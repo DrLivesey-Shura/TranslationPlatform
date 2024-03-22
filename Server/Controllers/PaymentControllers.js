@@ -43,4 +43,29 @@ const adminValidateTranslationDemand = async (req, res) => {
   }
 };
 
-module.exports = { adminValidateTranslationDemand, initiatePayment };
+const paymentProof = async (req, res) => {
+  try {
+    const { translationDemandId } = req.params;
+
+    if (!req.body.paymentProof) {
+      return res.status(400).send({ message: "Photo is required" });
+    }
+    const photo = req.body.paymentProof;
+
+    const updatedTranslationDemand = await translationDemand.findByIdAndUpdate(
+      translationDemandId,
+      { paymentProof: photo },
+      { new: true }
+    );
+
+    res.status(200).json(updatedTranslationDemand);
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+module.exports = {
+  adminValidateTranslationDemand,
+  initiatePayment,
+  paymentProof,
+};

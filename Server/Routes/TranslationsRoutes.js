@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const uploadMiddleware = require("../Middleware/MulterMiddleware");
-const { protect } = require("../Middleware/authMiddleware");
 const {
   createTranslationDemand,
   getAllTranslationDemands,
@@ -12,6 +11,7 @@ const {
 const {
   initiatePayment,
   adminValidateTranslationDemand,
+  paymentProof,
 } = require("../Controllers/PaymentControllers");
 const routes = new Router();
 
@@ -25,5 +25,10 @@ routes.delete("/:id", deleteTranslationDemandById);
 
 routes.post("/pay/:translationDemandId", initiatePayment);
 routes.put("/pay/:translationDemandId", adminValidateTranslationDemand);
+routes.post(
+  "/pay/proof/:translationDemandId",
+  uploadMiddleware.single("photo"),
+  paymentProof
+);
 
 module.exports = routes;

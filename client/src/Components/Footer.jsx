@@ -27,7 +27,7 @@ const Footer = () => {
         justify={{ base: "center", md: "center" }}
         align={{ base: "center", md: "center" }}
       >
-        <Text>© 2024 WE ARE WE. All rights reserved</Text>
+        <Text>© 2024 Tou La Translation. All rights reserved</Text>
       </Container>
     </Box>
   );

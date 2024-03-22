@@ -7,12 +7,27 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import axios from "axios";
-import { Box, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Spinner,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+} from "@chakra-ui/react";
+import ImageModal from "../../Components/ImageModal";
 
 const UserRequests = ({ user }) => {
   const [userTranslations, setUserTranslations] = useState([]);
   const [fileInfo, setFileInfo] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedTranslationId, setSelectedTranslationId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +98,8 @@ const UserRequests = ({ user }) => {
 
   const handlePayRequest = async (translationId) => {
     try {
+      setSelectedTranslationId(translationId);
+      setIsModalOpen(true);
       const config = {
         headers: { Authorization: `Bearer ${user.token}` },
       };
@@ -131,6 +148,32 @@ const UserRequests = ({ user }) => {
         return "success";
       default:
         return "primary";
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!selectedFile) {
+        console.log("No file selected");
+        return;
+      }
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      const response = await axios.post(
+        `/api/translation-demands/pay/proof/${selectedTranslationId}`,
+        {
+          paymentProof: selectedFile.name,
+        },
+        config
+      );
+      if (response.status === 200) {
+        console.log("Payment proof uploaded successfully");
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -186,6 +229,15 @@ const UserRequests = ({ user }) => {
                     <p className="fw-bold mb-1">{fileInfo[index]?.photo}</p>
                   </div>
                 </td>
+                {/* <td>
+                  <div>
+                    <ImageModal
+                      alt={dmnd.paymentProof}
+                      smallImageUrl={`http://localhost:4000/uploads/${dmnd.paymentProof}`}
+                      largeImageUrl={`http://localhost:4000/uploads/${dmnd.paymentProof}`}
+                    />
+                  </div>
+                </td> */}
                 <td>
                   <div>
                     <p className="fw-bold mb-1">{dmnd.language}</p>
@@ -244,6 +296,26 @@ const UserRequests = ({ user }) => {
           </MDBTableBody>
         </MDBTable>
       )}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Upload Payment Receipt</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <input
+              type="file"
+              onChange={(e) => {
+                setSelectedFile(e.target.files[0]);
+              }}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

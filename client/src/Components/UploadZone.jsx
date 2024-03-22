@@ -7,13 +7,10 @@ const UploadZone = ({ user, onUpload }) => {
   const [file, setFiles] = useState();
 
   const handleUpload = async () => {
-    console.log(user);
-    console.log(file);
     if (!file) {
       console.log("No file selected");
       return;
     }
-    console.log(file.name);
     try {
       const config = {
         headers: { Authorization: `Bearer ${user.token}` },

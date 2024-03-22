@@ -27,7 +27,7 @@ const Login = () => {
   const onSubmit = async () => {
     if (!(email && password)) {
       toast({
-        title: "Veuillez remplir vos infornations ",
+        title: "Please Provide All Informations ",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -50,8 +50,8 @@ const Login = () => {
       }
     } catch (error) {
       toast({
-        title: "error conect.",
-        description: "Cette information est incorrectes.",
+        title: "Connection Failed.",
+        description: "Invalid Credentials.",
         status: "error",
         duration: 9000,
         position: "top",

@@ -1,4 +1,4 @@
-const { translationDemand, Upload } = require("../Models/UserModel");
+const { translationDemand, Upload, User } = require("../Models/UserModel");
 
 // Create a new translation demand
 const createTranslationDemand = async (req, res) => {
@@ -9,6 +9,41 @@ const createTranslationDemand = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// const createTranslationDemand = async (req, res) => {
+//   try {
+//     const { label, userId, language, estimatedDate } = req.body;
+//     const file = req.file;
+//     // Check if user exists
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).send({ message: "User not found" });
+//     }
+
+//     // Check if file is provided
+//     if (!file) {
+//       return res.status(400).send({ message: "file is required" });
+//     }
+
+//     // Create the translation demand
+//     const newTranslationDemand = await translationDemand.create({
+//       label,
+//       userId,
+//       language,
+//       estimatedDate,
+//       file,
+//     });
+
+//     // Add the translation demand to user's demands
+//     user.demands.push(newTranslationDemand);
+//     await user.save();
+
+//     res.status(201).json(newTranslationDemand);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 
 // Get all translation demands
 const getAllTranslationDemands = async (req, res) => {

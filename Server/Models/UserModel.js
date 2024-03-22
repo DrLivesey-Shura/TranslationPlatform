@@ -11,10 +11,11 @@ const uploadSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Upload = mongoose.model("Upload", uploadSchema);
-
 const translationDemandSchema = new mongoose.Schema(
   {
+    label: {
+      type: String,
+    },
     uploadId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Upload",
@@ -49,6 +50,9 @@ const translationDemandSchema = new mongoose.Schema(
       enum: ["Pending", "Approved", "Rejected"],
       default: "Pending",
     },
+    paymentProof: {
+      type: String,
+    },
     adminValidationDate: {
       type: Date,
     },
@@ -56,10 +60,52 @@ const translationDemandSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const translationDemand = mongoose.model(
-  "translationDemand",
-  translationDemandSchema
-);
+// const translationDemandSchema = new mongoose.Schema(
+//   {
+//     label: {
+//       type: String,
+//     },
+//     userId: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "User",
+//       required: true,
+//     },
+//     language: {
+//       type: String,
+//       required: true,
+//     },
+//     estimatedDate: {
+//       type: Date,
+//       required: true,
+//     },
+//     // file: {
+//     //   type: String,
+//     //   required: true,
+//     // },
+//     status: {
+//       type: String,
+//       enum: ["Pending", "Working", "Done"],
+//       default: "Pending",
+//     },
+//     paymentStatus: {
+//       type: String,
+//       enum: ["Unpaid", "Verifying", "Verified", "Refused"],
+//       default: "Unpaid",
+//     },
+//     adminValidationStatus: {
+//       type: String,
+//       enum: ["Pending", "Approved", "Rejected"],
+//       default: "Pending",
+//     },
+//     paymentProof: {
+//       type: String,
+//     },
+//     adminValidationDate: {
+//       type: Date,
+//     },
+//   },
+//   { timestamps: true }
+// );
 
 const userSchema = mongoose.Schema(
   {
@@ -67,7 +113,7 @@ const userSchema = mongoose.Schema(
     username: { type: String, required: true },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    adress: { type: String, required: true },
+    level: { type: String, required: true },
     birthDay: { type: Date, required: true },
     phone: { type: String, required: true },
     pic: {
@@ -83,7 +129,6 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-const User = mongoose.model("User", userSchema);
 
 userSchema.pre("findOneAndRemove", async function (next) {
   const user = this; // 'this' refers to the document being removed
@@ -112,4 +157,15 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-module.exports = { User, Upload, translationDemand };
+const User = mongoose.model("User", userSchema);
+const Upload = mongoose.model("Upload", uploadSchema);
+const translationDemand = mongoose.model(
+  "translationDemand",
+  translationDemandSchema
+);
+
+module.exports = {
+  User,
+  Upload,
+  translationDemand,
+};

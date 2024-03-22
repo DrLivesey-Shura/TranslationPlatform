@@ -9,7 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
-    adress,
+    level,
     birthDay,
     phone,
     pic,
@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
       username ||
       email ||
       password ||
-      adress ||
+      level ||
       birthDay ||
       phone ||
       isAdmin
@@ -49,19 +49,20 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
-    adress,
+    level,
     birthDay,
     phone,
     pic,
     isAdmin,
   });
+
   if (user) {
     res.status(201).json({
       _id: user._id,
       name: user.name,
       username: user.username,
       email: user.email,
-      adress: user.adress,
+      level: user.level,
       birthDay: user.birthDay,
       phone: user.phone,
       pic: user.pic,
@@ -88,12 +89,13 @@ const loginUser = asyncHandler(async (req, res) => {
         name: user.name,
         username: user.username,
         email: user.email,
-        adress: user.adress,
+        level: user.level,
         birthDay: user.birthDay,
         phone: user.phone,
         uploads: user.uploads,
         pic: user.pic,
         isAdmin: user.isAdmin,
+        createdAt: user.createdAt,
         token: generateToken(user._id),
       });
     } else {
@@ -164,10 +166,17 @@ const fetchUserInfoFromUpload = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.json({ user });
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getAllUsers,
   editUserInfo,
   fetchUserInfoFromUpload,
+  getUserById,
 };

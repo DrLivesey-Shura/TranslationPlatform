@@ -11,6 +11,7 @@ import {
   HStack,
   Input,
   Link,
+  Select,
   Stack,
   Text,
   useToast,
@@ -26,7 +27,7 @@ const Register = () => {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const [phone, setPhone] = useState();
-  const [adress, setAdress] = useState();
+  const [level, setLevel] = useState();
   const [birthDay, setBirthDay] = useState();
 
   const navigate = useNavigate();
@@ -34,10 +35,10 @@ const Register = () => {
 
   const onSubmit = async () => {
     if (
-      !(name && username && email && adress && phone && birthDay && password)
+      !(name && username && email && level && phone && birthDay && password)
     ) {
       toast({
-        title: "Veuillez remplir vos infornations ",
+        title: "Please Provide All Informations ",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -48,7 +49,7 @@ const Register = () => {
 
     if (password.length < 6) {
       toast({
-        title: "Le mot de passe doit contenir 6 caractères ou moins",
+        title: "Password Must be atleast 6 characters length",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -59,7 +60,7 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       toast({
-        title: "le mot passe est incompatible",
+        title: "Password doesn't match",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -71,7 +72,7 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast({
-        title: "Invalid email address",
+        title: "Invalid email format",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -84,11 +85,11 @@ const Register = () => {
       const config = { headers: { "content-type": "application/json" } };
       const { data } = await axios.post(
         "/api/user/",
-        { name, username, email, password, adress, phone, birthDay },
+        { name, username, email, password, level, phone, birthDay },
         config
       );
       localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 409) {
         toast({
@@ -212,12 +213,19 @@ const Register = () => {
               </HStack>
               <HStack spacing={{ base: "4", md: "8" }} width="800px">
                 <FormControl>
-                  <FormLabel htmlFor="adress">Location</FormLabel>
-                  <Input
-                    onChange={(e) => setAdress(e.target.value)}
-                    id="adress"
-                    type="adress"
-                  />
+                  <FormLabel htmlFor="level">Education Level</FormLabel>
+
+                  <Select
+                    id="level"
+                    onChange={(e) => setLevel(e.target.value)}
+                    placeholder="Select Level"
+                    value={level}
+                  >
+                    <option value="Student">Student</option>
+                    <option value="Professor">Professor</option>
+                    <option value="Researcher">Researcher</option>
+                    <option value="Other">Other</option>
+                  </Select>
                 </FormControl>
                 <FormControl>
                   <FormLabel htmlFor="phone">Phone</FormLabel>
@@ -250,7 +258,7 @@ const Register = () => {
               </HStack>
             </Stack>
             <HStack justify="space-between">
-              <Checkbox defaultChecked>accept rules</Checkbox>
+              <Checkbox>accept rules</Checkbox>
             </HStack>
             <Stack spacing="6">
               <Button onClick={onSubmit} color="white" bg="#3142C4">

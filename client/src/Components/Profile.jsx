@@ -13,9 +13,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-const Profile = ({ user }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const Profile = ({ user, isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -25,9 +23,14 @@ const Profile = ({ user }) => {
         <ModalBody>
           {user && (
             <Box>
-              <Text>{user.name}</Text>
-              <Text>{user.email}</Text>
-              <Text>{user.phone}</Text>
+              <Text>Name : {user.name}</Text>
+              {user.email ? (
+                <Text>Email : {user.email}</Text>
+              ) : (
+                <Text>CCP : {user.ccp} </Text>
+              )}
+
+              {user.phone ? <Text>Phone : {user.phone}</Text> : <></>}
             </Box>
           )}
         </ModalBody>
