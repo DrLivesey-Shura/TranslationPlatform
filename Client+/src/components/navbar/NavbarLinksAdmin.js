@@ -45,7 +45,7 @@ export default function HeaderLinks(props) {
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
-    navigate('/login');
+    navigate('/auth/sign-in');
   };
 
   const handleMyUploadClick = () => {

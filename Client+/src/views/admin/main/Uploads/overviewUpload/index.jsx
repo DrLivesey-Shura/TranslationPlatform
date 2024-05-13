@@ -1,10 +1,10 @@
 // Chakra imports
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import SearchTableOverview from 'views/admin/main/ecommerce/overviewProduct/components/SearchTableOverview';
+import SearchTableOverview from 'views/admin/main/Uploads/overviewUpload/components/SearchTableOverview';
 
-export default function ProductOverview() {
+export default function UploadOverview() {
   const user = JSON.parse(localStorage.getItem('userInfo'));
   const [userTranslations, setUserTranslations] = useState([]);
   const [fileInfo, setFileInfo] = useState([]);
@@ -18,7 +18,7 @@ export default function ProductOverview() {
         );
 
         const fileInfoRequests = userTranslationsResponse.data.map((dmnd) =>
-          axios.get(`/upload/file/${dmnd.uploadId}`),
+          axios.get(`/upload/file/${dmnd.uploadId._id}`),
         );
 
         const fileInfosResponses = await Promise.all(fileInfoRequests);
@@ -39,23 +39,32 @@ export default function ProductOverview() {
   }, [user._id]);
 
   // Function to update userTranslations after deletion
-  const handleDelete = (deletedId) => {
+  const handleDelete = (trDeletedId, fileDeletedId) => {
     setUserTranslations(
-      userTranslations.filter((item) => item._id !== deletedId),
+      userTranslations.filter((item) => item._id !== trDeletedId),
     );
-    // setFileInfo(fileInfo.filter((item) => item._id !== deletedId));
+    setFileInfo(fileInfo.filter((item) => item._id !== fileDeletedId));
   };
-  console.log(userTranslations);
 
   return (
     <Flex direction="column" pt={{ sm: '125px', lg: '75px' }}>
-      {!isLoading && (
+      {!isLoading ? (
         <SearchTableOverview
           user={user}
           translations={userTranslations}
           fileInfo={fileInfo}
           onDelete={handleDelete}
         />
+      ) : (
+        <Box display="flex" justifyContent="center" mt="20">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Box>
       )}
     </Flex>
   );

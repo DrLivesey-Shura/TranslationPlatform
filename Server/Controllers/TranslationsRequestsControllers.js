@@ -51,7 +51,7 @@ const getAllTranslationDemands = async (req, res) => {
     // Use populate to get related Upload information
     const allTranslationDemands = await translationDemand
       .find()
-      .populate("uploadId", "photo")
+      .populate("uploadId", "file")
       .populate("userId", "name pic email");
 
     res.status(200).json(allTranslationDemands);
@@ -64,7 +64,10 @@ const getAllTranslationDemands = async (req, res) => {
 const getTranslationDemandById = async (req, res) => {
   const { id } = req.params;
   try {
-    const foundTranslationDemand = await translationDemand.findById(id);
+    const foundTranslationDemand = await translationDemand
+      .findById(id)
+      .populate("uploadId", "file")
+      .populate("userId", "name pic email");
     if (!foundTranslationDemand) {
       return res.status(404).json({ error: "Translation Demand not found" });
     }
@@ -78,9 +81,11 @@ const getTranslationDemandById = async (req, res) => {
 const getUserTranslationDemand = async (req, res) => {
   const { id } = req.params;
   try {
-    const foundUserTranslationDemand = await translationDemand.find({
-      userId: id,
-    });
+    const foundUserTranslationDemand = await translationDemand
+      .find({
+        userId: id,
+      })
+      .populate("uploadId", "file");
     if (!foundUserTranslationDemand) {
       return res.status(404).json({ error: "Translation Demand not found" });
     }

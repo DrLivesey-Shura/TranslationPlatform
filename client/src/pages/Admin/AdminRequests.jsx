@@ -188,7 +188,7 @@ const AdminRequests = ({ user }) => {
                   </td>
                   <td>
                     <div>
-                      <p className="fw-bold mb-1">{dmnd.uploadId.photo}</p>
+                      <p className="fw-bold mb-1">{dmnd.uploadId.file}</p>
                     </div>
                   </td>
                   <td>

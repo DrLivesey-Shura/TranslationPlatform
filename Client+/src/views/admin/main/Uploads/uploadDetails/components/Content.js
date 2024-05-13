@@ -4,9 +4,6 @@ import { Box, Flex, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { HSeparator } from 'components/separator/Separator';
 import React from 'react';
 // Custom components
-import ReceiptTable from 'views/admin/main/ecommerce/orderDetails/components/ReceiptTable';
-import { tableColumnsReceipt } from 'views/admin/main/ecommerce/orderDetails/variables/tableColumnsReceipt';
-import tableDataReceipt from 'views/admin/main/ecommerce/orderDetails/variables/tableDataReceipt.json';
 
 export default function Content(props) {
   const { file, translation, ...rest } = props;
@@ -15,9 +12,7 @@ export default function Content(props) {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   let paid = 0;
   let total = 0;
-  for (let i = 0; i < tableDataReceipt.length; i++) {
-    total = total + tableDataReceipt[i].amount;
-  }
+
   return (
     <Flex
       direction="column"
@@ -81,15 +76,6 @@ export default function Content(props) {
               Number of words : 235
             </Text>
           </Stack>
-          {/* <Text
-            fontSize="md"
-            fontWeight="400"
-            color="secondaryGray.600"
-            maxW="322px"
-          >
-            Ship all the ordered items together by Friday and I send you an
-            email, please check. Thanks!
-          </Text> */}
         </Box>
         <Box>
           <Flex align="center" justifyContent="space-between" mb="12px">
@@ -102,7 +88,7 @@ export default function Content(props) {
               Total
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              ${total}
+              666$
             </Text>
           </Flex>
           <Flex align="center" justifyContent="space-between">
@@ -113,10 +99,10 @@ export default function Content(props) {
               color={textColor}
               fontSize="lg"
             >
-              Paid to date
+              Paid to bost
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              ${paid}
+              0$
             </Text>
           </Flex>
           <HSeparator my="20px" />
@@ -131,7 +117,7 @@ export default function Content(props) {
               Amount to pay
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              ${total - paid}
+              5454$
             </Text>
           </Flex>
         </Box>

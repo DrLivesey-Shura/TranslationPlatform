@@ -70,7 +70,27 @@ function SignIn() {
         config,
       );
       localStorage.setItem('userInfo', JSON.stringify(data));
-      console.log(data);
+
+      // Display loading toast while waiting for the login response
+      const loginPromise = new Promise((resolve, reject) => {
+        resolve(data);
+      });
+
+      toast.promise(loginPromise, {
+        loading: 'Logging in...',
+        success: {
+          title: 'Login Successful',
+          description: `Welcome, ${data.username}!`,
+        },
+        error: {
+          title: 'Login Failed',
+          description: 'Invalid Credentials',
+        },
+        duration: 5000,
+        position: 'bottom',
+        isClosable: true,
+      });
+
       if (data.isAdmin) {
         navigate('/admin/dashboards');
       } else {
@@ -82,7 +102,7 @@ function SignIn() {
         description: 'Invalid Credentials.',
         status: 'error',
         duration: 9000,
-        position: 'top',
+        position: 'bottom',
         isClosable: true,
       });
     }

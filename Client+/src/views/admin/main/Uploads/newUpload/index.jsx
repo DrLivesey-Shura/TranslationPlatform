@@ -19,8 +19,8 @@ import {
 // Custom components
 import Card from 'components/card/Card';
 import InputField from 'components/fields/InputField';
-import Dropzone from 'views/admin/main/ecommerce/newProduct/components/Dropzone';
-import PaymentModal from 'views/admin/main/ecommerce/newProduct/components/PaymentModal';
+import Dropzone from 'views/admin/main/Uploads/newUpload/components/Dropzone';
+import PaymentModal from 'views/admin/main/Uploads/newUpload/components/PaymentModal';
 import React, { useState } from 'react';
 
 // Assets
@@ -28,7 +28,7 @@ import { MdOutlineCloudUpload } from 'react-icons/md';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function NewProduct() {
+export default function NewUpload() {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const [activeBullets, setActiveBullets] = useState({
     product: true,
@@ -120,7 +120,6 @@ export default function NewProduct() {
       );
 
       if (response.status === 200) {
-        // Optionally, you can update the local state or show a success message
         console.log('Payment initiated successfully');
         setIsPaymentModalOpen(false);
       }
@@ -145,7 +144,7 @@ export default function NewProduct() {
       position="relative"
     >
       <Box
-        h="35vh"
+        h="45vh"
         bgGradient="linear(to-b, brand.400, brand.600)"
         position="absolute"
         w="100%"
@@ -154,7 +153,7 @@ export default function NewProduct() {
 
       <Tabs
         variant="unstyled"
-        mt={{ base: '20px', md: '125px' }}
+        mt={{ base: '10px', md: '100px' }}
         zIndex="0"
         display="flex"
         flexDirection="column"
@@ -508,7 +507,7 @@ export default function NewProduct() {
                     {file ? (
                       <Stack direction="column" gap="20px">
                         <Text>Translation Name : {demandData.label} </Text>
-                        <Text>File Name : {file.photo} </Text>
+                        <Text>File Name : {file.file} </Text>
                         <Text>Number of pages : </Text>
                         <Text>Number of words : </Text>
                         <Text>Total to be Payed :3000.00 da </Text>
@@ -532,6 +531,8 @@ export default function NewProduct() {
                     Prev
                   </Button>
                   <Button
+                    isLoading={uploading}
+                    loadingText="Uploading"
                     variant="darkBrand"
                     fontSize="sm"
                     borderRadius="16px"

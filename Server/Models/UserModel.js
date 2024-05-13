@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const uploadSchema = new mongoose.Schema(
   {
-    photo: {
+    file: {
       type: String,
       required: true,
     },

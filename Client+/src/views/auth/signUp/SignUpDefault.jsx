@@ -116,7 +116,7 @@ function SignUp() {
           title: 'Error connecting to the server',
           status: 'error',
           duration: 5000,
-          position: 'top',
+          position: 'bottom',
           isClosable: true,
         });
       }

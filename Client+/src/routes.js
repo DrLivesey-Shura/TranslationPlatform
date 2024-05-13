@@ -10,9 +10,9 @@ import DashboardsDefault from 'views/admin/dashboards';
 
 import ProfileSettings from 'views/admin/main/profile/settings';
 
-import EcommerceNewProduct from 'views/admin/main/ecommerce/newProduct';
-import EcommerceProductOverview from 'views/admin/main/ecommerce/overviewProduct';
-import EcommerceOrderDetails from 'views/admin/main/ecommerce/orderDetails';
+import NewUpload from 'views/admin/main/Uploads/newUpload';
+import UploadOverview from 'views/admin/main/Uploads/overviewUpload';
+import UploadDetails from 'views/admin/main/Uploads/uploadDetails';
 
 // Others
 import OthersError from 'views/admin/main/others/404';
@@ -58,14 +58,14 @@ const routes = [
             layout: '/admin',
             path: '/upload/new-upload',
             exact: false,
-            component: <EcommerceNewProduct />,
+            component: <NewUpload />,
           },
           {
             name: 'My Uploads',
             layout: '/admin',
             path: '/upload/my-uploads',
             exact: false,
-            component: <EcommerceProductOverview />,
+            component: <UploadOverview />,
           },
           // {
           //   name: 'Order List',
@@ -79,7 +79,7 @@ const routes = [
             layout: '/admin',
             path: '/upload/upload-details/:currentTranslationId',
             exact: false,
-            component: <EcommerceOrderDetails />,
+            component: <UploadDetails />,
           },
         ],
       },

@@ -1,5 +1,7 @@
 const { User, Upload } = require("../Models/UserModel");
 const asyncHandler = require("express-async-handler");
+const fs = require("fs");
+const path = require("path");
 
 const fetchUploads = asyncHandler(async (req, res) => {
   try {
@@ -30,12 +32,12 @@ const uploadFile = asyncHandler(async (req, res) => {
       return res.status(404).send({ message: "User not found" });
     }
 
-    if (!req.body.photo) {
-      return res.status(400).send({ message: "Photo is required" });
+    if (!req.file) {
+      return res.status(400).send({ message: "file is required" });
     }
-    const photo = req.body.photo;
+    const file = req.file.originalname;
 
-    const upload = await Upload.create({ photo });
+    const upload = await Upload.create({ file });
 
     user.uploads.push(upload);
     await user.save();
@@ -97,10 +99,26 @@ const userUploads = asyncHandler(async (req, res) => {
   }
 });
 
+const downloadUpload = asyncHandler(async (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join("uploads", filename);
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send({ message: "File not found" });
+    }
+
+    // Stream the file to the client
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+});
+
 module.exports = {
   uploadFile,
   deleteUpload,
   fetchUploads,
   userUploads,
   fetchUploadById,
+  downloadUpload,
 };

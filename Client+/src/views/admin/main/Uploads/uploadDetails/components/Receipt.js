@@ -5,7 +5,7 @@ import Card from 'components/card/Card';
 import React from 'react';
 // Assets
 import { MdDownload, MdPrint, MdShare } from 'react-icons/md';
-import Content from 'views/admin/main/ecommerce/orderDetails/components/Content';
+import Content from 'views/admin/main/Uploads/uploadDetails/components/Content';
 const generateRandomOrderNumber = () => {
   return Math.floor(Math.random() * 90000) + 10000;
 };
@@ -16,6 +16,8 @@ export default class ComponentToPrint extends React.Component {
     const { file, translation, bgButton, bgFocus, bgHover, ...rest } =
       this.props;
     const randomOrderNumber = generateRandomOrderNumber();
+    console.log('file: ', file);
+    console.log('translation: ', translation);
     return (
       <Card
         {...rest}

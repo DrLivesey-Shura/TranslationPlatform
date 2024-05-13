@@ -10,7 +10,7 @@ import Card from 'components/card/Card';
 
 export default function Settings(props) {
   // eslint-disable-next-line
-  const { name, avatar, banner } = props;
+  const { user } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'secondaryGray.600';
@@ -23,9 +23,9 @@ export default function Settings(props) {
         minH="127px"
         borderRadius="16px"
       ></Flex>
-      <Avatar mx="auto" src={avatar} h="87px" w="87px" mt="-43px" mb="15px" />
+      <Avatar mx="auto" src={user.pic} h="87px" w="87px" mt="-43px" mb="15px" />
       <Text fontSize="2xl" textColor={textColorPrimary} fontWeight="700">
-        {name}
+        {user.name}
       </Text>
       <Flex align="center" mx="auto" px="15px">
         <Text
@@ -37,7 +37,7 @@ export default function Settings(props) {
         >
           Account type:
         </Text>
-        <Select
+        <Text
           id="user_type"
           w="unset"
           variant="transparent"
@@ -47,9 +47,8 @@ export default function Settings(props) {
           alignItems="center"
           defaultValue="Administrator"
         >
-          <option value="Administrator">Administrator</option>
-          <option value="Member">Member</option>
-        </Select>
+          {user.level}
+        </Text>
       </Flex>
     </Card>
   );
