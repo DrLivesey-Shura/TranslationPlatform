@@ -17,6 +17,10 @@ import UploadDetails from 'views/admin/main/Uploads/uploadDetails';
 // Others
 import OthersError from 'views/admin/main/others/404';
 
+//Users
+// import UserNew from 'views/admin/main/users/newUser/index';
+// import UsersOverview from 'views/admin/main/users/overview/index';
+
 // Auth Imports
 import ForgotPasswordDefault from 'views/auth/forgotPassword/ForgotPasswordDefault.jsx';
 import LockDefault from 'views/auth/lock/LockDefault.jsx';
@@ -67,13 +71,6 @@ const routes = [
             exact: false,
             component: <UploadOverview />,
           },
-          // {
-          //   name: 'Order List',
-          //   layout: '/admin',
-          //   path: '/main/ecommerce/order-list',
-          //   exact: false,
-          //   component: <EcommerceOrderList />,
-          // },
           {
             name: 'Upload Details',
             layout: '/admin',
@@ -157,25 +154,12 @@ const routes = [
           {
             name: 'Default',
             layout: '/auth',
-            path: '/verification/default',
+            path: '/verification',
             component: <VerificationDefault />,
           },
         ],
       },
-      // --- Lock ---
-      {
-        name: 'Lock',
-        path: '/lock',
-        collapse: true,
-        items: [
-          {
-            name: 'Default',
-            layout: '/auth',
-            path: '/lock/default',
-            component: <LockDefault />,
-          },
-        ],
-      },
+
       // --- Forgot Password ---
       {
         name: 'Forgot Password',
@@ -185,7 +169,7 @@ const routes = [
           {
             name: 'Default',
             layout: '/auth',
-            path: '/forgot-password/default',
+            path: '/forgot-password',
             component: <ForgotPasswordDefault />,
           },
         ],

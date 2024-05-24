@@ -508,9 +508,12 @@ export default function NewUpload() {
                       <Stack direction="column" gap="20px">
                         <Text>Translation Name : {demandData.label} </Text>
                         <Text>File Name : {file.file} </Text>
-                        <Text>Number of pages : </Text>
-                        <Text>Number of words : </Text>
-                        <Text>Total to be Payed :3000.00 da </Text>
+                        <Text>Number of pages : {file.numPages} </Text>
+                        <Text>Number of words : {file.numWords} </Text>
+                        <Text>
+                          Total to be Payed : {(file.numWords * 1.5).toFixed(2)}{' '}
+                          DZD
+                        </Text>
                       </Stack>
                     ) : (
                       <Stack direction="column" gap="20px">

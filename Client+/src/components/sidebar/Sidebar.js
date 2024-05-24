@@ -24,6 +24,7 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 
 // Assets
 import { IoMenuOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 
 function Sidebar(props) {
   const { routes, mini, hovered, setHovered } = props;
@@ -37,6 +38,7 @@ function Sidebar(props) {
   let sidebarBg = useColorModeValue('white', 'navy.800');
   let sidebarRadius = '30px';
   let sidebarMargins = '0px';
+
   // SIDEBAR
   return (
     <Box

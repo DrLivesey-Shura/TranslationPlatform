@@ -1,8 +1,9 @@
-const { User, Upload } = require("../Models/UserModel");
+const { User, Upload, uploadTrasnlated } = require("../Models/UserModel");
 const asyncHandler = require("express-async-handler");
 const fs = require("fs");
 const path = require("path");
-
+const pdfParse = require("pdf-parse");
+const sendEmail = require("../Middleware/emailService");
 const fetchUploads = asyncHandler(async (req, res) => {
   try {
     const allPhotos = await Upload.find().sort({ createdAt: "descending" });
@@ -36,8 +37,19 @@ const uploadFile = asyncHandler(async (req, res) => {
       return res.status(400).send({ message: "file is required" });
     }
     const file = req.file.originalname;
+    const dataBuffer = fs.readFileSync(req.file.path);
 
-    const upload = await Upload.create({ file });
+    const data = await pdfParse(dataBuffer);
+
+    const text = data.text;
+    const numWords = text.split(/\s+/).length;
+    const numPages = data.numpages;
+
+    const upload = await Upload.create({
+      file: file,
+      numPages: numPages,
+      numWords: numWords,
+    });
 
     user.uploads.push(upload);
     await user.save();
@@ -114,6 +126,51 @@ const downloadUpload = asyncHandler(async (req, res) => {
   });
 });
 
+const downloadTranslatedUpload = asyncHandler(async (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join("translatedUploads", filename);
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send({ message: "File not found" });
+    }
+
+    // Stream the file to the client
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+});
+
+const uploadTrasnlatedFile = asyncHandler(async (req, res) => {
+  const userEmail = req.body.userEmail;
+  const user = await User.findOne({ email: userEmail });
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: "file is required" });
+    }
+
+    const file = req.file.originalname;
+
+    const upload = await uploadTrasnlated.create({
+      file: file,
+    });
+
+    sendEmail(
+      user.email,
+      "Your translated file is ready",
+      "Your translated file is now ready for download. Please log in to your account to download it."
+    );
+
+    res.send(upload);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = {
   uploadFile,
   deleteUpload,
@@ -121,4 +178,6 @@ module.exports = {
   userUploads,
   fetchUploadById,
   downloadUpload,
+  uploadTrasnlatedFile,
+  downloadTranslatedUpload,
 };

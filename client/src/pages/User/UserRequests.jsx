@@ -214,7 +214,7 @@ const UserRequests = ({ user }) => {
                 <td>
                   <div className="d-flex align-items-center">
                     <img
-                      src={user.pic}
+                      src={"https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_34.png"}
                       alt=""
                       style={{ width: "45px", height: "45px" }}
                       className="rounded-circle"

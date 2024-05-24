@@ -4,17 +4,8 @@ const generateToken = require("../utils/generateToken.js");
 const { User } = require("../Models/UserModel.js");
 
 const registerUser = asyncHandler(async (req, res) => {
-  const {
-    name,
-    username,
-    email,
-    password,
-    level,
-    birthDay,
-    phone,
-    pic,
-    isAdmin,
-  } = req.body;
+  const { name, username, email, password, level, birthDay, phone, isAdmin } =
+    req.body;
 
   if (
     !(
@@ -52,7 +43,6 @@ const registerUser = asyncHandler(async (req, res) => {
     level,
     birthDay,
     phone,
-    pic,
     isAdmin,
   });
 
@@ -65,7 +55,6 @@ const registerUser = asyncHandler(async (req, res) => {
       level: user.level,
       birthDay: user.birthDay,
       phone: user.phone,
-      pic: user.pic,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     });
@@ -93,7 +82,6 @@ const loginUser = asyncHandler(async (req, res) => {
         birthDay: user.birthDay,
         phone: user.phone,
         uploads: user.uploads,
-        pic: user.pic,
         isAdmin: user.isAdmin,
         createdAt: user.createdAt,
         token: generateToken(user._id),
@@ -114,7 +102,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const editUserInfo = async (req, res) => {
-  const { name, email, pic } = req.body;
+  const { name, username, level, phone, email } = req.body;
   const userId = req.params.id;
 
   try {
@@ -126,7 +114,9 @@ const editUserInfo = async (req, res) => {
 
     if (name) user.name = name;
     if (email) user.email = email;
-    if (pic) user.pic = pic;
+    if (username) user.username = username;
+    if (level) user.level = level;
+    if (phone) user.phone = phone;
 
     user = await user.save();
 
@@ -136,6 +126,42 @@ const editUserInfo = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const changeUserPassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.params.id;
+
+  try {
+    // Step 2: Find the user by their ID (assuming req.user contains the authenticated user's ID)
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Step 3: Verify the current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    // Step 4: Validate the new password (add your own validation logic)
+    if (newPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "New password must be at least 6 characters long" });
+    }
+
+    user.password = newPassword;
+
+    await user.save();
+
+    // Step 6: Respond to the client
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -156,7 +182,6 @@ const fetchUserInfoFromUpload = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      pic: user.pic,
     };
 
     res.status(200).json(userInfo);
@@ -179,4 +204,5 @@ module.exports = {
   editUserInfo,
   fetchUserInfoFromUpload,
   getUserById,
+  changeUserPassword,
 };

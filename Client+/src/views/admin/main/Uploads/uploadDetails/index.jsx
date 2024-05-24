@@ -13,7 +13,7 @@ export default function UploadDetails() {
   const bgButton = 'rgba(255,255,255,0.12)';
   const bgHover = { bg: 'whiteAlpha.50' };
   const bgFocus = { bg: 'rgba(255,255,255,0.12)' };
-  const [translation, setTranslation] = useState(null);
+  const [translation, setTranslation] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const componentRef = useRef();
 
@@ -21,44 +21,21 @@ export default function UploadDetails() {
     content: () => componentRef.current,
   });
 
-  const fetchTransaltionDemand = async () => {
-    try {
-      // const config = {
-      //   headers: { Authorization: `Bearer ${user.token}` },
-      // };
-      const response = await axios.get(
-        `/translation-demands/${currentTranslationId}`,
-        // config,
-      );
-      console.log(response.data);
-      setTranslation(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching translation demand:', error);
-    }
-  };
-
   useEffect(() => {
-    fetchTransaltionDemand();
+    (async () => {
+      try {
+        const response = await axios.get(
+          `/translation-demands/${currentTranslationId}`,
+        );
+        console.log(response.data);
+        setIsLoading(false);
+        setTranslation(response.data);
+      } catch (error) {
+        console.error('Error fetching translation demand:', error);
+        setIsLoading(false);
+      }
+    })();
   }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const userTranslationsResponse = await axios.get(
-  //       `/translation-demands/${currentTranslationId}`,
-  //     );
-  //     console.log(userTranslationsResponse.data);
-  //     setTranslation(userTranslationsResponse.data);
-  //   } catch (error) {
-  //     console.error('Error fetching translation:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, [currentTranslationId]);
 
   return (
     <Box>
@@ -68,20 +45,8 @@ export default function UploadDetails() {
         direction="column"
         pt={{ base: '130px', md: '80px', xl: '80px' }}
       >
-        {!isLoading ? (
-          <Receipt
-            me="20px"
-            gridArea={{ base: '1 / 1 / 2 / 3', lg: '1 / 1 / 2 / 2' }}
-            ref={componentRef}
-            handlePrint={handlePrint}
-            textColor={textColor}
-            bgButton={bgButton}
-            bgHover={bgHover}
-            bgFocus={bgFocus}
-            translation={translation}
-            file={translation.uploadId}
-          />
-        ) : (
+        {console.log('translation ' + translation)}
+        {isLoading ? (
           <Box display="flex" justifyContent="center" mt="20">
             <Spinner
               thickness="4px"
@@ -91,6 +56,24 @@ export default function UploadDetails() {
               size="xl"
             />
           </Box>
+        ) : translation ? (
+          <>
+            {console.log('translation ' + translation)}
+            <Receipt
+              me="20px"
+              gridArea={{ base: '1 / 1 / 2 / 3', lg: '1 / 1 / 2 / 2' }}
+              ref={componentRef}
+              handlePrint={handlePrint}
+              textColor={textColor}
+              bgButton={bgButton}
+              bgHover={bgHover}
+              bgFocus={bgFocus}
+              translation={translation}
+              file={translation.uploadId}
+            />
+          </>
+        ) : (
+          <div>No translation data available.</div>
         )}
       </Grid>
       <Details />

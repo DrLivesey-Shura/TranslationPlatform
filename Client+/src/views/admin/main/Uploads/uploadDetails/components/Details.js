@@ -73,8 +73,7 @@ export default function YourOrderSteps(props) {
           fontWeight="400"
           lineHeight="26px"
         >
-          July 27, 2022 at 09:44 AM
-          {/* {user.createdAt} */}
+          {user.createdAt}
         </Text>
       </Flex>
       <Image

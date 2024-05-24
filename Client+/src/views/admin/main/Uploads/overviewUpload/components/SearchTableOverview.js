@@ -74,10 +74,14 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
   };
 
   const handleDownload = async (filename) => {
+    const modifiedFilename = filename.replace(/(\.[\w\d_-]+)$/i, '_tr$1');
     try {
-      const response = await axios.get(`/upload/download/${filename}`, {
-        responseType: 'blob', // Receive response as a Blob
-      });
+      const response = await axios.get(
+        `/upload/download-translated/${modifiedFilename}`,
+        {
+          responseType: 'blob', // Receive response as a Blob
+        },
+      );
       console.log(response);
       // Create a temporary anchor element to trigger the download
       const url = window.URL.createObjectURL(new Blob([response.data]));

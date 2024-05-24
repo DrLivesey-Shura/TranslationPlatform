@@ -47,7 +47,7 @@ export default function Content(props) {
               color="secondaryGray.600"
               maxW="322px"
             >
-              File Name : {file.photo}{' '}
+              File Name : {translation.uploadId.file}{' '}
             </Text>
 
             <Text
@@ -65,7 +65,7 @@ export default function Content(props) {
               color="secondaryGray.600"
               maxW="322px"
             >
-              Number of pages : 2{' '}
+              Number of pages : {file.numPages}
             </Text>
             <Text
               fontSize="md"
@@ -73,7 +73,7 @@ export default function Content(props) {
               color="secondaryGray.600"
               maxW="322px"
             >
-              Number of words : 235
+              Number of words :{file.numWords}
             </Text>
           </Stack>
         </Box>
@@ -85,10 +85,10 @@ export default function Content(props) {
               fontSize="lg"
               fontWeight="400"
             >
-              Total
+              Traduction fee's :
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              666$
+              {(file.numWords * 1.5).toFixed(2)} DZD
             </Text>
           </Flex>
           <Flex align="center" justifyContent="space-between">
@@ -117,7 +117,7 @@ export default function Content(props) {
               Amount to pay
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              5454$
+              {(file.numWords * 1.5).toFixed(2)} DZD
             </Text>
           </Flex>
         </Box>

@@ -1,17 +1,97 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   MDBBadge,
-  MDBBtn,
   MDBTable,
   MDBTableHead,
+  MDBBtn,
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import axios from "axios";
 import { Box, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 const AdminRequests = ({ user }) => {
   const [translations, setTranslations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [file, setFile] = useState(null);
+  const [dmndId, setDmndId] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleModalOpen = (dmndId, email) => {
+    setDmndId(dmndId);
+    setUserEmail(email);
+    onOpen();
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleFileUpload = async (e) => {
+    e.preventDefault();
+
+    // Create a new file with the modified name
+    const modifiedFileName = file.name.replace(/(\.[\w\d_-]+)$/i, "_tr$1");
+    const modifiedFile = new File([file], modifiedFileName, {
+      type: file.type,
+    });
+
+    const formData = new FormData();
+    formData.append("file", modifiedFile);
+    formData.append("userEmail", userEmail);
+
+    try {
+      const response = await axios.post(
+        "/api/upload/translated-upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      handleRequestIsDone(dmndId);
+      onClose();
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  const handleDownload = async (filename) => {
+    try {
+      const response = await axios.get(`/api/upload/download/${filename}`, {
+        responseType: "blob", // Receive response as a Blob
+      });
+      console.log(response);
+      // Create a temporary anchor element to trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename); // Set the filename
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,23 +109,24 @@ const AdminRequests = ({ user }) => {
     fetchData();
   }, [user, translations]);
 
-  const handleRequestIsDone = async (translationDemandId) => {
+  const handleRequestIsDone = async () => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${user.token}` },
       };
 
       const response = await axios.put(
-        `/api/translation-demands/pay/${translationDemandId}`,
+        `/api/translation-demands/pay/${dmndId}`,
         {
           status: "Done",
         },
         config
       );
+      console.log(response.data);
 
       if (response.status === 200) {
         // Handle success, e.g., update state or perform additional actions
-        console.log("Translation demand refused and validated successfully");
+        console.log("Translation demand accepted and validated successfully");
       }
     } catch (error) {
       console.error("Error refusing and validating translation demand:", error);
@@ -176,7 +257,9 @@ const AdminRequests = ({ user }) => {
                   <td>
                     <div className="d-flex align-items-center">
                       <img
-                        src={dmnd.userId.pic}
+                        src={
+                          "https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_34.png"
+                        }
                         alt=""
                         style={{ width: "45px", height: "45px" }}
                         className="rounded-circle"
@@ -241,15 +324,30 @@ const AdminRequests = ({ user }) => {
                           ACCEPTED
                         </MDBBtn>
                       </>
+                    ) : dmnd.status == "Working" ? (
+                      <>
+                        {" "}
+                        <MDBBtn
+                          onClick={() => handleDownload(dmnd.uploadId.file)}
+                          color="link"
+                          rounded
+                          size="sm"
+                        >
+                          Download
+                        </MDBBtn>
+                        <MDBBtn
+                          onClick={() =>
+                            handleModalOpen(dmnd._id, dmnd.userId.email)
+                          }
+                          color="link"
+                          rounded
+                          size="sm"
+                        >
+                          DONE
+                        </MDBBtn>
+                      </>
                     ) : (
-                      <MDBBtn
-                        onClick={() => handleRequestIsDone(dmnd._id)}
-                        color="link"
-                        rounded
-                        size="sm"
-                      >
-                        DONE
-                      </MDBBtn>
+                      <></>
                     )}
                   </td>
                 </tr>
@@ -258,6 +356,29 @@ const AdminRequests = ({ user }) => {
           </MDBTableBody>
         </MDBTable>
       )}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Upload File</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <form onSubmit={handleFileUpload}>
+              <FormControl>
+                <FormLabel>Choose file</FormLabel>
+                <Input type="file" onChange={handleFileChange} />
+              </FormControl>
+            </form>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" onClick={onClose}>
+              Close
+            </Button>
+            <Button colorScheme="blue" onClick={handleFileUpload}>
+              Upload
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

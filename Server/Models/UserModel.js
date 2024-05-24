@@ -7,6 +7,23 @@ const uploadSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    numPages: {
+      type: Number,
+      required: true,
+    },
+    numWords: {
+      type: Number,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+const uploadTrasnlatedSchema = new mongoose.Schema(
+  {
+    file: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
@@ -116,11 +133,6 @@ const userSchema = mongoose.Schema(
     level: { type: String, required: true },
     birthDay: { type: Date, required: true },
     phone: { type: String, required: true },
-    pic: {
-      type: String,
-      default:
-        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-    },
     uploads: [uploadSchema],
     translationDemands: [translationDemandSchema],
     isAdmin: { type: Boolean, default: false },
@@ -159,6 +171,10 @@ userSchema.pre("save", async function (next) {
 
 const User = mongoose.model("User", userSchema);
 const Upload = mongoose.model("Upload", uploadSchema);
+const uploadTrasnlated = mongoose.model(
+  "UploadTrasnlated",
+  uploadTrasnlatedSchema
+);
 const translationDemand = mongoose.model(
   "translationDemand",
   translationDemandSchema
@@ -168,4 +184,5 @@ module.exports = {
   User,
   Upload,
   translationDemand,
+  uploadTrasnlated,
 };

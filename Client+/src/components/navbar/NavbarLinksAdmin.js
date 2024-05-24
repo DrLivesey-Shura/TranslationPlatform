@@ -42,7 +42,10 @@ export default function HeaderLinks(props) {
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
   const user = JSON.parse(localStorage.getItem('userInfo'));
   const navigate = useNavigate();
-
+  if (!user) {
+    navigate('/auth');
+    return null;
+  }
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     navigate('/auth/sign-in');

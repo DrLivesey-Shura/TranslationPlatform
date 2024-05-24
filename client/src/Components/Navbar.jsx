@@ -136,7 +136,7 @@ const Navbar = ({ user, onNavLinkClick }) => {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar size={"md"} src={user.pic} />
+                <Avatar size={"md"} src={"https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_34.png"} />
               </MenuButton>
             </Box>
 

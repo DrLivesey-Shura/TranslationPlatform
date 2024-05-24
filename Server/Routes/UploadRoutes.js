@@ -8,7 +8,10 @@ const {
   deleteUpload,
   fetchUploadById,
   downloadUpload,
+  uploadTrasnlatedFile,
+  downloadTranslatedUpload,
 } = require("../Controllers/UploadsControllers");
+const uploadTranslatedMiddleware = require("../Middleware/MulterMiddlewareTrans");
 
 const routes = new Router();
 
@@ -17,8 +20,14 @@ routes.get("/", fetchUploads);
 routes.get("/file/:fileId", fetchUploadById);
 routes.get("/:userId", userUploads);
 routes.post("/", uploadMiddleware.single("file"), uploadFile);
+routes.get("/download/:filename", downloadUpload);
 routes.delete("/delete/:uploadId", deleteUpload);
 
-routes.get("/download/:filename", downloadUpload);
+routes.post(
+  "/translated-upload",
+  uploadTranslatedMiddleware.single("file"),
+  uploadTrasnlatedFile
+);
+routes.get("/download-translated/:filename", downloadTranslatedUpload);
 
 module.exports = routes;

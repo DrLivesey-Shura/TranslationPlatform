@@ -10,37 +10,6 @@ function Dropzone({ content, onUploadStateChanged, onUploadSuccess, ...rest }) {
   const [file, setFiles] = useState();
   const textColor = useColorModeValue('secondaryGray.900', 'white');
 
-  // const handleUpload = async () => {
-  //   if (!file) {
-  //     console.log('No file selected');
-  //     return;
-  //   }
-  //   try {
-  //     onUploadStateChanged(true);
-
-  //     const config = {
-  //       headers: { Authorization: `Bearer ${user.token}` },
-  //     };
-
-  //     const response = await axios.post(
-  //       '/upload/',
-  //       {
-  //         photo: file.name,
-  //         userId: user._id,
-  //       },
-  //       config,
-  //     );
-  //     console.log('Upload successful:', response.data);
-  //     if (onUploadSuccess) {
-  //       onUploadSuccess(response.data);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error uploading file:', error);
-  //   } finally {
-  //     onUploadStateChanged(false);
-  //   }
-  // };
-
   const handleUpload = async () => {
     if (!file) {
       console.log('No file selected');
