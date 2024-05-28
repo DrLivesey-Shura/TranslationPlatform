@@ -66,7 +66,7 @@ const getTranslationDemandById = async (req, res) => {
   try {
     const foundTranslationDemand = await translationDemand
       .findById(id)
-      .populate("uploadId", "file numPages numWords")
+      .populate("uploadId", "file numPages numWords estimatedDate")
       .populate("userId", "name pic email");
     if (!foundTranslationDemand) {
       return res.status(404).json({ error: "Translation Demand not found" });

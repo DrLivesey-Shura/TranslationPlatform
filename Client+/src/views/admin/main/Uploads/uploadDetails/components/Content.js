@@ -75,6 +75,14 @@ export default function Content(props) {
             >
               Number of words :{file.numWords}
             </Text>
+            <Text
+              fontSize="md"
+              fontWeight="400"
+              color="secondaryGray.600"
+              maxW="322px"
+            >
+              Estimated Date :{file.estimatedDate}
+            </Text>
           </Stack>
         </Box>
         <Box>

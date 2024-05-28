@@ -28,8 +28,19 @@ function Dropzone({ content, onUploadStateChanged, onUploadSuccess, ...rest }) {
         },
       });
       console.log('Upload successful:', response.data);
+      const { numWords, numPages } = response.data; // Assuming the response contains file details
+      const estimatedDate = calculateEstimatedDate(numWords);
+
+      // Update the state or perform further actions with the estimated date
+      const updatedFileDetails = {
+        ...response.data,
+        estimatedDate: estimatedDate,
+      };
+
+      console.log('Updated file details:', updatedFileDetails);
+
       if (onUploadSuccess) {
-        onUploadSuccess(response.data);
+        onUploadSuccess(updatedFileDetails);
       }
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -42,6 +53,15 @@ function Dropzone({ content, onUploadStateChanged, onUploadSuccess, ...rest }) {
     handleUpload(); // Trigger handleUpload when file changes
   }, [file]);
 
+  const calculateEstimatedDate = (numWords) => {
+    const wordsPerDay = 200;
+    const daysNeeded = Math.ceil(numWords / wordsPerDay);
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + daysNeeded);
+    return currentDate.toISOString(); // Returns the date in ISO format
+  };
+
+  // return currentDate.toISOString().split('T')[0]; // Returns the date in 'YYYY-MM-DD' format
   return (
     <>
       <Box borderColor={borderColor} my="25px">

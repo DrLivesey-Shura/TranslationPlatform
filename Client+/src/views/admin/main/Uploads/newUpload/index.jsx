@@ -55,15 +55,10 @@ export default function NewUpload() {
   const user = JSON.parse(localStorage.getItem('userInfo'));
   const userId = user._id;
   const [demandData, setDemandData] = useState({
-    date: '',
     language: '',
     label: '',
   });
   const [file, setFile] = useState();
-
-  const handleDateChange = (e) => {
-    setDemandData({ ...demandData, date: e.target.value });
-  };
 
   const handleLanguageChange = (e) => {
     setDemandData({ ...demandData, language: e.target.value });
@@ -82,7 +77,7 @@ export default function NewUpload() {
       const response = await axios.post('/translation-demands', {
         uploadId: file._id,
         userId: userId,
-        estimatedDate: demandData.date,
+        estimatedDate: file.estimatedDate,
         label: demandData.label,
         language: demandData.language,
       });
@@ -330,14 +325,14 @@ export default function NewUpload() {
                       label="Upload Name"
                       onChange={handleLableChange}
                     />
-                    <InputField
+                    {/* <InputField
                       mb="0px"
                       id="weight"
                       placeholder="need it before "
                       type="date"
                       label="Estimated Date"
                       onChange={handleDateChange}
-                    />
+                    /> */}
                     <Select
                       id="language"
                       placeholder="Translate it to"
@@ -346,7 +341,7 @@ export default function NewUpload() {
                     >
                       <option value="english">English</option>
                       <option value="french">French</option>
-                      <option value="spanish">Spanish</option>
+                      <option value="arabic">Arabic</option>
                     </Select>
                   </Stack>
                 </SimpleGrid>
@@ -510,6 +505,7 @@ export default function NewUpload() {
                         <Text>File Name : {file.file} </Text>
                         <Text>Number of pages : {file.numPages} </Text>
                         <Text>Number of words : {file.numWords} </Text>
+                        <Text>Estimated Date : {file.estimatedDate} </Text>
                         <Text>
                           Total to be Payed : {(file.numWords * 1.5).toFixed(2)}{' '}
                           DZD

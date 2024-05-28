@@ -28,6 +28,7 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
     'NAME',
     'LANGUAGE',
     'DATE',
+    'ESTIMATED DATE',
     'TRANSLATOR',
     'STATUS',
     'PAYMENT',
@@ -193,6 +194,26 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
                                 timeStyle: 'long',
                               },
                             )}
+                          </Text>
+                        </Flex>
+                      </Td>
+                      <Td
+                        fontSize={{ sm: '14px' }}
+                        minW={{ sm: '150px', md: '200px', lg: 'auto' }}
+                        borderColor={borderColor}
+                      >
+                        <Flex align="center">
+                          <Text
+                            color={textColor}
+                            fontSize="sm"
+                            fontWeight="700"
+                          >
+                            {new Date(
+                              translations[i].estimatedDate,
+                            ).toLocaleString('en-US', {
+                              dateStyle: 'full',
+                              timeStyle: 'long',
+                            })}
                           </Text>
                         </Flex>
                       </Td>
