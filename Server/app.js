@@ -3,6 +3,7 @@ const connectDB = require("./db.js");
 const UserRoutes = require("./Routes/UserRoutes.js");
 const UploadRoutes = require("./Routes/UploadRoutes.js");
 const TranslationsRoutes = require("./Routes/TranslationsRoutes.js");
+const BraintreeRoutes = require("./Routes/braintree.js");
 const app = express();
 const cors = require("cors");
 const colors = require("colors");
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use("/braintree", BraintreeRoutes);
 app.use("/user", UserRoutes);
 app.use("/upload", UploadRoutes);
 app.use("/translation-demands", TranslationsRoutes);

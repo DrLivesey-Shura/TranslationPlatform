@@ -94,7 +94,7 @@ function SignIn() {
       if (data.isAdmin) {
         navigate('/admin/dashboards');
       } else {
-        navigate('/admin/dashboards');
+        navigate('/user/dashboards');
       }
     } catch (error) {
       toast({

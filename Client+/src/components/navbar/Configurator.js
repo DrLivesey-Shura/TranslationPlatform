@@ -656,7 +656,7 @@ export default function HeaderLinks(props) {
                   />
                 </ConfiguratorRadio>
               </SimpleGrid>
-              <Text color={textColor} mb="12px" fontWeight={'700'}>
+              {/* <Text color={textColor} mb="12px" fontWeight={'700'}>
                 Contrast
               </Text>
               <SimpleGrid columns={2} gap="20px" mb="30px">
@@ -681,8 +681,8 @@ export default function HeaderLinks(props) {
                       boxShadow={shadowBlock}
                     />
                   </Flex>
-                </ConfiguratorRadio>
-                <ConfiguratorRadio
+                </ConfiguratorRadio> */}
+              {/* <ConfiguratorRadio
                   onClick={() => changeBgContrast()}
                   active={contrast === false ? false : true}
                   label={<Text>Filled</Text>}
@@ -703,8 +703,8 @@ export default function HeaderLinks(props) {
                       boxShadow={shadowBlock}
                     />
                   </Flex>
-                </ConfiguratorRadio>
-              </SimpleGrid>
+                </ConfiguratorRadio> */}
+              {/* </SimpleGrid> */}
               <Text color={textColor} mb="12px" fontWeight={'700'}>
                 Sidebar
               </Text>

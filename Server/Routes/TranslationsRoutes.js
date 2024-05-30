@@ -13,18 +13,19 @@ const {
   adminValidateTranslationDemand,
   paymentProof,
 } = require("../Controllers/PaymentControllers");
+const { isAdmin, isAuth } = require("../utils/utils");
 const routes = new Router();
 
 // Add routes
-routes.post("/", createTranslationDemand);
-routes.get("/", getAllTranslationDemands);
-routes.get("/:id", getTranslationDemandById);
-routes.get("/user/:id", getUserTranslationDemand);
-routes.put("/:id", updateTranslationDemandById);
-routes.delete("/:id", deleteTranslationDemandById);
+routes.post("/", isAuth, createTranslationDemand);
+routes.get("/", isAuth, isAdmin, getAllTranslationDemands);
+routes.get("/:id", isAuth, getTranslationDemandById);
+routes.get("/user/:id", isAuth, getUserTranslationDemand);
+routes.put("/:id", isAuth, updateTranslationDemandById);
+routes.delete("/:id", isAuth, deleteTranslationDemandById);
 
-routes.post("/pay/:translationDemandId", initiatePayment);
-routes.put("/pay/:translationDemandId", adminValidateTranslationDemand);
+routes.post("/pay/:translationDemandId", isAuth, initiatePayment);
+routes.put("/pay/:translationDemandId", isAuth, adminValidateTranslationDemand);
 routes.post(
   "/pay/proof/:translationDemandId",
   uploadMiddleware.single("photo"),

@@ -156,9 +156,13 @@ export const globalStyles = {
     gray: {
       100: '#FAFCFE',
     },
+    // background: {
+    //   100: '#FFFFFF',
+    //   900: '#0b1437',
+    // },
     background: {
-      100: '#FFFFFF',
-      900: '#0b1437',
+      100: '#F4F7FE',
+      900: '#070f2e',
     },
   },
   styles: {

@@ -8,7 +8,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log(transporter);
 const sendEmail = (to, subject, text) => {
   const mailOptions = {
     from: process.env.EMAIL,

@@ -24,7 +24,7 @@ export default function Dashboard(props) {
   const [hovered, setHovered] = useState(false);
   // functions for changing the states from components
   const getRoute = () => {
-    return window.location.pathname !== '/admin/full-screen-maps';
+    return window.location.pathname !== '/user/full-screen-maps';
   };
   const getActiveRoute = (routes) => {
     let activeRoute = 'Main Dashboard';
@@ -64,7 +64,7 @@ export default function Dashboard(props) {
   };
   const getRoutes = (routes) => {
     return routes.map((route, key) => {
-      if (route.layout === '/admin') {
+      if (route.layout === '/user') {
         return (
           <Route path={`${route.path}`} element={route.component} key={key} />
         );
@@ -152,7 +152,7 @@ export default function Dashboard(props) {
                 {getRoutes(routes)}
                 <Route
                   path="/"
-                  element={<Navigate to="/admin/dashboards" replace />}
+                  element={<Navigate to="/user/dashboards" replace />}
                 />
               </Routes>
             </Box>

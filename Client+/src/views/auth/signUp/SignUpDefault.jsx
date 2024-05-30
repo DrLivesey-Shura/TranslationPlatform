@@ -93,7 +93,7 @@ function SignUp() {
         config,
       );
       localStorage.setItem('userInfo', JSON.stringify(data));
-      navigate('/admin/dashboards');
+      navigate('/user/dashboards');
     } catch (error) {
       if (error.response && error.response.status === 409) {
         toast({

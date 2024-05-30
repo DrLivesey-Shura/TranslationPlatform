@@ -56,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
       birthDay: user.birthDay,
       phone: user.phone,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id),
+      token: generateToken(user),
     });
   } else {
     res.status(400);
@@ -84,7 +84,7 @@ const loginUser = asyncHandler(async (req, res) => {
         uploads: user.uploads,
         isAdmin: user.isAdmin,
         createdAt: user.createdAt,
-        token: generateToken(user._id),
+        token: generateToken(user),
       });
     } else {
       res.status(400);

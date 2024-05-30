@@ -9,16 +9,17 @@ const {
   changeUserPassword,
 } = require("../Controllers/UserControllers");
 const { protect } = require("../Middleware/authMiddleware");
+const { isAuth, isAdmin } = require("../utils/utils");
 
 const routes = new Router();
 
 // Add routes
 routes.post("/", registerUser);
 routes.post("/login", loginUser);
-routes.get("/", getAllUsers);
-routes.get("/:id", getUserById);
-routes.put("/:id", editUserInfo);
-routes.put("/change-password/:id", changeUserPassword);
-routes.get("/byupload/:uploadId", fetchUserInfoFromUpload);
+routes.get("/", isAuth, isAdmin, getAllUsers);
+routes.get("/:id", isAuth, getUserById);
+routes.put("/:id", isAuth, editUserInfo);
+routes.put("/change-password/:id", isAuth, changeUserPassword);
+routes.get("/byupload/:uploadId", isAuth, fetchUserInfoFromUpload);
 
 module.exports = routes;

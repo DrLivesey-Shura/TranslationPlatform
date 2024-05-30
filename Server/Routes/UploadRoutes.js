@@ -12,6 +12,7 @@ const {
   downloadTranslatedUpload,
 } = require("../Controllers/UploadsControllers");
 const uploadTranslatedMiddleware = require("../Middleware/MulterMiddlewareTrans");
+const { isAuth } = require("../utils/utils");
 
 const routes = new Router();
 
@@ -25,9 +26,10 @@ routes.delete("/delete/:uploadId", deleteUpload);
 
 routes.post(
   "/translated-upload",
+  isAuth,
   uploadTranslatedMiddleware.single("file"),
   uploadTrasnlatedFile
 );
-routes.get("/download-translated/:filename", downloadTranslatedUpload);
+routes.get("/download-translated/:filename", isAuth, downloadTranslatedUpload);
 
 module.exports = routes;
