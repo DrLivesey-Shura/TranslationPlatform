@@ -6,10 +6,10 @@ import profile from 'assets/img/crm/vbz.png';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 // Custom components
-import Info from 'views/user/main/profile/settings/components/Info';
-import Password from 'views/user/main/profile/settings/components/Password';
-import Profile from 'views/user/main/profile/settings/components/Profile';
-import Socials from 'views/user/main/profile/settings/components/Socials';
+import Info from 'views/admin/main/profile/settings/components/Info';
+import Password from 'views/admin/main/profile/settings/components/Password';
+import Profile from 'views/admin/main/profile/settings/components/Profile';
+import Socials from 'views/admin/main/profile/settings/components/Socials';
 
 const user = JSON.parse(localStorage.getItem('userInfo'));
 

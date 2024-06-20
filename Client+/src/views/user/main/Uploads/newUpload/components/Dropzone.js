@@ -4,7 +4,13 @@ import { Box, Input, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import FormData from 'form-data';
-function Dropzone({ content, onUploadStateChanged, onUploadSuccess, ...rest }) {
+function Dropzone({
+  content,
+  onUploadStateChanged,
+  onUploadSuccess,
+  isUrgent,
+  ...rest
+}) {
   const user = JSON.parse(localStorage.getItem('userInfo'));
   const borderColor = useColorModeValue('gray.300', 'whiteAlpha.100');
   const [file, setFiles] = useState();
@@ -55,13 +61,15 @@ function Dropzone({ content, onUploadStateChanged, onUploadSuccess, ...rest }) {
 
   const calculateEstimatedDate = (numWords) => {
     const wordsPerDay = 200;
-    const daysNeeded = Math.ceil(numWords / wordsPerDay);
+    let daysNeeded = Math.ceil(numWords / wordsPerDay);
+    if (isUrgent) {
+      daysNeeded = Math.ceil(daysNeeded / 2);
+    }
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + daysNeeded);
     return currentDate.toISOString(); // Returns the date in ISO format
   };
 
-  // return currentDate.toISOString().split('T')[0]; // Returns the date in 'YYYY-MM-DD' format
   return (
     <>
       <Box borderColor={borderColor} my="25px">

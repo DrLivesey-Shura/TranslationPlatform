@@ -31,8 +31,8 @@ import MiniSidebar from 'assets/img/layout/MiniSidebar.png';
 import MiniSidebarDark from 'assets/img/layout/MiniSidebarDark.png';
 import ConfiguratorLogo from 'assets/img/layout/ConfiguratorLogo.png';
 // Assets
+import { FaBrush } from 'react-icons/fa';
 import {
-  MdSettings,
   MdFullscreen,
   MdOutlineFullscreenExit,
   MdRefresh,
@@ -538,7 +538,14 @@ export default function HeaderLinks(props) {
         w="max-content"
         onClick={onOpen}
       >
-        <Icon me="10px" h="18px" w="18px" color={navbarIcon} as={MdSettings} />
+        <Icon
+          me="10px"
+          h="25px"
+          ml="10px"
+          w="25px"
+          color={navbarIcon}
+          as={FaBrush}
+        />
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -590,12 +597,14 @@ export default function HeaderLinks(props) {
                 me="20px"
                 borderRadius="999px"
                 bgGradient="linear(to-b, brand.400, brand.600)"
+                justifyContent="center"
+                alignItems="center"
               >
-                <Image src={ConfiguratorLogo} />
+                <Text color="white">TS</Text>
               </Flex>
               <Box>
                 <Text color={textColor} fontSize="xl" fontWeight="700">
-                  Configurator
+                  Themes
                 </Text>
                 <Text
                   display={'flex'}
@@ -603,7 +612,7 @@ export default function HeaderLinks(props) {
                   fontSize="md"
                   fontWeight="500"
                 >
-                  Horizon UI PRO TS
+                  Transaltion Services
                   <Badge
                     display="flex"
                     colorScheme="horizonPurple"
@@ -615,7 +624,7 @@ export default function HeaderLinks(props) {
                     px="4px"
                     ms="6px"
                   >
-                    v2.0.0
+                    DEMO
                   </Badge>
                 </Text>
               </Box>
@@ -654,108 +663,6 @@ export default function HeaderLinks(props) {
                     maxW={{ base: '100%', md: '130px' }}
                     borderRadius="8px"
                   />
-                </ConfiguratorRadio>
-              </SimpleGrid>
-              {/* <Text color={textColor} mb="12px" fontWeight={'700'}>
-                Contrast
-              </Text>
-              <SimpleGrid columns={2} gap="20px" mb="30px">
-                <ConfiguratorRadio
-                  onClick={() => changeBgDefault()}
-                  active={contrast === true ? false : true}
-                  label={<Text>Transparent</Text>}
-                >
-                  <Flex
-                    pt="10px"
-                    ps="10px"
-                    bg="repeat"
-                    borderRadius="10px"
-                    border="1px solid"
-                    borderColor={borderButton}
-                    bgImage={`url(${ContrastImage})`}
-                    overflow="hidden"
-                  >
-                    <Image
-                      mt="auto"
-                      src={ContrastBlockImage}
-                      boxShadow={shadowBlock}
-                    />
-                  </Flex>
-                </ConfiguratorRadio> */}
-              {/* <ConfiguratorRadio
-                  onClick={() => changeBgContrast()}
-                  active={contrast === false ? false : true}
-                  label={<Text>Filled</Text>}
-                >
-                  <Flex
-                    pt="10px"
-                    ps="10px"
-                    borderRadius="10px"
-                    border="1px solid"
-                    borderColor={borderButton}
-                    bg={bgContrast}
-                    overflow="hidden"
-                  >
-                    <Image
-                      mt="auto"
-                      src={ContrastBlockImage}
-                      maxW={{ base: '100%', md: '130px' }}
-                      boxShadow={shadowBlock}
-                    />
-                  </Flex>
-                </ConfiguratorRadio> */}
-              {/* </SimpleGrid> */}
-              <Text color={textColor} mb="12px" fontWeight={'700'}>
-                Sidebar
-              </Text>
-              <SimpleGrid columns={2} gap="20px" mb="30px">
-                <ConfiguratorRadio
-                  onClick={() => props.setMini(false)}
-                  active={props.mini === true ? false : true}
-                  label={<Text>Default</Text>}
-                >
-                  <Flex
-                    // w="130px"
-                    // h="120px"
-                    py="25px"
-                    px="18px"
-                    borderRadius="10px"
-                    border="1px solid"
-                    borderColor={borderButton}
-                    bg={bgContrast}
-                    overflow="hidden"
-                    maxW={{ base: '100%', md: '130px' }}
-                  >
-                    <Image
-                      src={DefaultSidebarImage}
-                      maxW={{ base: '100%', md: '96px' }}
-                      boxShadow={shadowBlock}
-                    />
-                  </Flex>
-                </ConfiguratorRadio>
-                <ConfiguratorRadio
-                  onClick={() => props.setMini(true)}
-                  active={props.mini === false ? false : true}
-                  label={<Text>Minimized</Text>}
-                >
-                  <Flex
-                    // w="130px"
-                    // h="120px"
-                    py="27.5px"
-                    px="28px"
-                    maxW={{ base: '100%', md: '130px' }}
-                    borderRadius="10px"
-                    border="1px solid"
-                    borderColor={borderButton}
-                    bg={bgContrast}
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={MiniSidebarImage}
-                      maxW={{ base: '100%', md: '75px' }}
-                      boxShadow={shadowBlock}
-                    />
-                  </Flex>
                 </ConfiguratorRadio>
               </SimpleGrid>
               <Text color={textColor} mb="12px" fontWeight={'700'}>

@@ -2,6 +2,7 @@ import './assets/css/App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthLayout from './layouts/auth';
 import UserLayout from './layouts/user';
+import AdminLayout from './layouts/admin';
 import {
   ChakraProvider,
   // extendTheme
@@ -22,7 +23,12 @@ export default function Main() {
             <UserLayout theme={currentTheme} setTheme={setCurrentTheme} />
           }
         />
-        <Route path="/" element={<Navigate to="/user" replace />} />
+        <Route
+          path="admin/*"
+          element={
+            <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
+          }
+        />
       </Routes>
     </ChakraProvider>
   );

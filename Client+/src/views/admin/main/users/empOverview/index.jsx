@@ -3,7 +3,7 @@ import { Box, Flex, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
 import Card from 'components/card/Card';
 import React, { useEffect, useState } from 'react';
-import SearchTableUsers from 'views/admin/main/users/overview/components/SearchTableUsersOverivew';
+import SearchTableUsers from 'views/admin/main/users/empOverview/components/SearchTableUsersOverivew';
 
 export default function UsersOverview() {
   const user = JSON.parse(localStorage.getItem('userInfo'));
@@ -16,8 +16,8 @@ export default function UsersOverview() {
         const config = {
           headers: { Authorization: `Bearer ${user.token}` },
         };
-        const response = await axios.get('/user/', config);
-        setUsers(response.data.users);
+        const response = await axios.get('/employee/', config);
+        setUsers(response.data.employes);
       } catch (error) {
         console.error(error);
       } finally {

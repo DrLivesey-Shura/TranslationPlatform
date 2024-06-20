@@ -14,6 +14,7 @@ import {
   Text,
   useColorModeValue,
   useTheme,
+  Checkbox,
 } from '@chakra-ui/react';
 
 // Custom components
@@ -49,7 +50,11 @@ export default function NewUpload() {
   const [currentTranslationId, setCurrentTranslationId] = useState();
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [price, setPrice] = useState();
+  const [isUrgent, setIsUrgent] = useState(false);
 
+  const handleCheckboxChange = (e) => {
+    setIsUrgent(e.target.checked);
+  };
   const handleUploadStateChanged = (isUploading) => {
     setUploading(isUploading);
   };
@@ -86,6 +91,7 @@ export default function NewUpload() {
           estimatedDate: file.estimatedDate,
           label: demandData.label,
           language: demandData.language,
+          isUrgent: isUrgent,
         },
         config,
       );
@@ -134,8 +140,22 @@ export default function NewUpload() {
   };
 
   useEffect(() => {
-    if (file) {
-      const calculatedPrice = (file.numWords * 1.5).toFixed(2);
+    if (file && file.numPages <= 15 && !isUrgent) {
+      let calculatedPrice = (file.numWords * 2).toFixed(2);
+      setPrice(calculatedPrice);
+    }
+    if (file && file.numPages <= 15 && isUrgent) {
+      let calculatedPrice = (file.numWords * 2).toFixed(2) * 2;
+      setPrice(calculatedPrice);
+    }
+    if (file && file.numPages > 15 && isUrgent) {
+      let calculatedPrice = (file.numWords * 2).toFixed(2) * 2;
+      calculatedPrice -= 100 * file.numPages;
+      setPrice(calculatedPrice);
+    }
+    if (file && file.numPages > 15 && !isUrgent) {
+      let calculatedPrice = (file.numWords * 2).toFixed(2);
+      calculatedPrice -= 100 * file.numPages;
       setPrice(calculatedPrice);
     }
   }, [file]);
@@ -340,14 +360,6 @@ export default function NewUpload() {
                       label="Upload Name"
                       onChange={handleLableChange}
                     />
-                    {/* <InputField
-                      mb="0px"
-                      id="weight"
-                      placeholder="need it before "
-                      type="date"
-                      label="Estimated Date"
-                      onChange={handleDateChange}
-                    /> */}
                     <Select
                       id="language"
                       placeholder="Translate it to"
@@ -358,6 +370,14 @@ export default function NewUpload() {
                       <option value="french">French</option>
                       <option value="arabic">Arabic</option>
                     </Select>
+                    <Checkbox
+                      size="lg"
+                      value={isUrgent}
+                      onChange={handleCheckboxChange}
+                    >
+                      Urgent (You'll pay double the price to get your order in
+                      half the normal time)
+                    </Checkbox>
                   </Stack>
                 </SimpleGrid>
                 <Flex justify="space-between" mt="24px">
@@ -423,6 +443,7 @@ export default function NewUpload() {
                 }
                 onUploadStateChanged={handleUploadStateChanged}
                 onUploadSuccess={handleUploadSuccess}
+                isUrgent={isUrgent}
               />
               <Flex justify="space-between" mt="24px">
                 <Button
@@ -471,7 +492,7 @@ export default function NewUpload() {
                       >
                         You Transaltion demand has been registred, now its time
                         for the payment the payment works on word translated (
-                        for each word you pay 5.6da ) here is the resume oof the
+                        for each word you pay 2da ) here is the resume oof the
                         payment :
                       </Text>
                     </Stack>
@@ -481,11 +502,19 @@ export default function NewUpload() {
                         <Text>File Name : {file.file} </Text>
                         <Text>Number of pages : {file.numPages} </Text>
                         <Text>Number of words : {file.numWords} </Text>
-                        <Text>Estimated Date : {file.estimatedDate} </Text>
-                        {/* <Text>
-                          Total to be Payed : {(file.numWords * 1.5).toFixed(2)}{' '}
-                          DZD
-                        </Text> */}
+                        <Text>
+                          Estimated Date :{' '}
+                          {new Date(file.estimatedDate).toLocaleString(
+                            'en-US',
+                            {
+                              dateStyle: 'full',
+                              timeStyle: 'long',
+                            },
+                          )}{' '}
+                        </Text>{' '}
+                        <Text>
+                          Is Your demand Urgent: {isUrgent ? 'Yes' : 'No'}
+                        </Text>
                         <Text>Total to be Paid : {price} DZD</Text>
                       </Stack>
                     ) : (
@@ -506,6 +535,7 @@ export default function NewUpload() {
                   >
                     Prev
                   </Button>
+
                   <Button
                     isLoading={uploading}
                     loadingText="Uploading"

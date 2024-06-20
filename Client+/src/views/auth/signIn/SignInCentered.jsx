@@ -13,18 +13,18 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
   useColorModeValue,
+  Text,
   useToast,
 } from '@chakra-ui/react';
-// Custom components
-import { HSeparator } from 'components/separator/Separator';
-import CenteredAuth from 'layouts/auth/types/Centered';
 // Assets
-// import illustration from 'assets/img/auth/auth.png';
 import { FcGoogle } from 'react-icons/fc';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { RiEyeCloseLine } from 'react-icons/ri';
+
+// Custom components
+import { HSeparator } from 'components/separator/Separator';
+import CenteredAuth from 'layouts/auth/types/Centered';
 import axios from 'axios';
 
 function SignIn() {
@@ -44,12 +44,14 @@ function SignIn() {
     { bg: 'secondaryGray.300' },
     { bg: 'whiteAlpha.200' },
   );
-  const [show, setShow] = useState(false);
+
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
   const toast = useToast();
-  const handleClick = () => setShow(!show);
 
   const onSubmit = async () => {
     if (!(email && password)) {
@@ -118,12 +120,8 @@ function SignIn() {
         w="100%"
         mx={{ base: 'auto', lg: '0px' }}
         me="auto"
-        h="100%"
-        alignItems="start"
         justifyContent="center"
-        mb={{ base: '30px', md: '60px' }}
-        px={{ base: '25px', md: '0px' }}
-        mt={{ base: '40px', md: '14vh' }}
+        px={{ base: '20px', md: '0px' }}
         flexDirection="column"
       >
         <Box me="auto">
@@ -151,28 +149,7 @@ function SignIn() {
           me="auto"
           mb={{ base: '20px', md: 'auto' }}
         >
-          <Button
-            fontSize="sm"
-            me="0px"
-            mb="26px"
-            py="15px"
-            h="50px"
-            borderRadius="16px"
-            bg={googleBg}
-            color={googleText}
-            fontWeight="500"
-            _hover={googleHover}
-            _active={googleActive}
-            _focus={googleActive}
-          >
-            <Icon as={FcGoogle} w="20px" h="20px" me="10px" />
-            Sign in with Google
-          </Button>
           <Flex align="center" mb="25px">
-            <HSeparator />
-            <Text color="gray.400" mx="14px">
-              or
-            </Text>
             <HSeparator />
           </Flex>
           <FormControl>
@@ -204,7 +181,6 @@ function SignIn() {
               fontSize="sm"
               fontWeight="500"
               color={textColor}
-              isRequired={true}
               display="flex"
             >
               Password<Text color={brandStars}>*</Text>
@@ -213,6 +189,7 @@ function SignIn() {
               <Input
                 isRequired={true}
                 fontSize="sm"
+                ms={{ base: '0px', md: '4px' }}
                 placeholder="Min. 8 characters"
                 mb="24px"
                 size="lg"

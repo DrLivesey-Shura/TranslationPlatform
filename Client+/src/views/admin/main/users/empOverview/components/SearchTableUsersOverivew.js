@@ -29,15 +29,13 @@ import {
 } from 'react-table';
 
 function SearchTable2(users) {
-  console.log(users);
+  console.log(users.users);
   const columnsData = [
     'FULL NAME',
     'EMAIL',
-    'USERNAME',
-    'JOIN DATE',
     'PHONE',
-    'SPECIALITY',
-    'NUMBER OF TRANSALTIONS',
+    'JOIN DATE',
+    'LANGUAGES',
     'ACTION',
   ];
 
@@ -73,7 +71,6 @@ function SearchTable2(users) {
               return (
                 <Tr key={i}>
                   <Td
-                    key={i}
                     fontSize={{ sm: '12px' }}
                     minW={{ sm: '120px', md: '150px', lg: 'auto' }}
                     borderColor={borderColor}
@@ -85,7 +82,6 @@ function SearchTable2(users) {
                     </Flex>
                   </Td>
                   <Td
-                    key={i}
                     fontSize={{ sm: '12px' }}
                     minW={{ sm: '120px', md: '150px', lg: 'auto' }}
                     borderColor={borderColor}
@@ -97,19 +93,17 @@ function SearchTable2(users) {
                     </Flex>
                   </Td>
                   <Td
-                    key={i}
                     fontSize={{ sm: '12px' }}
                     minW={{ sm: '120px', md: '150px', lg: 'auto' }}
                     borderColor={borderColor}
                   >
                     <Flex align="center">
                       <Text color={textColor} fontSize="md" fontWeight="500">
-                        @{user.username}
+                        {user.phone}
                       </Text>
                     </Flex>
                   </Td>
                   <Td
-                    key={i}
                     fontSize={{ sm: '12px' }}
                     minW={{ sm: '120px', md: '150px', lg: 'auto' }}
                     borderColor={borderColor}
@@ -125,44 +119,32 @@ function SearchTable2(users) {
                     </Flex>
                   </Td>
                   <Td
-                    key={i}
                     fontSize={{ sm: '12px' }}
                     minW={{ sm: '120px', md: '150px', lg: 'auto' }}
                     borderColor={borderColor}
                   >
                     <Flex align="center">
-                      <Text color={textColor} fontSize="md" fontWeight="500">
-                        {user.phone}
-                      </Text>
+                      {user.languages.map((language, index) => (
+                        <Text
+                          key={index}
+                          color={textColor}
+                          fontSize="md"
+                          fontWeight="500"
+                          mr="5px"
+                          mb="5px"
+                          px="8px"
+                          py="2px"
+                          borderRadius="md"
+                          bg="blue.100"
+                          border="1px solid"
+                          borderColor="blue.300"
+                        >
+                          {language}
+                        </Text>
+                      ))}
                     </Flex>
                   </Td>
                   <Td
-                    key={i}
-                    fontSize={{ sm: '12px' }}
-                    minW={{ sm: '120px', md: '150px', lg: 'auto' }}
-                    borderColor={borderColor}
-                  >
-                    <Flex align="center">
-                      <Text color={textColor} fontSize="md" fontWeight="500">
-                        {user.level}
-                      </Text>
-                    </Flex>
-                  </Td>
-
-                  <Td
-                    key={i}
-                    fontSize={{ sm: '12px' }}
-                    minW={{ sm: '120px', md: '150px', lg: 'auto' }}
-                    borderColor={borderColor}
-                  >
-                    <Flex align="center">
-                      <Text color={textColor} fontSize="md" fontWeight="500">
-                        {user.uploads.length}
-                      </Text>
-                    </Flex>
-                  </Td>
-                  <Td
-                    key={i}
                     fontSize={{ sm: '12px' }}
                     minW={{ sm: '120px', md: '150px', lg: 'auto' }}
                     borderColor={borderColor}

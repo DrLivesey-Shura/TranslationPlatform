@@ -1,3 +1,6 @@
+import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
 // Chakra imports
 import {
   Box,
@@ -18,12 +21,13 @@ import {
   useColorModeValue,
   useToast,
 } from '@chakra-ui/react';
-// Assets
-import illustration from 'assets/img/auth/auth.png';
+
+// Custom components
 import { HSeparator } from 'components/separator/Separator';
-import DefaultAuth from 'layouts/auth/types/Default';
-import { NavLink, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import CenteredAuth from 'layouts/auth/types/Centered';
+
+// Assets
+import { FcGoogle } from 'react-icons/fc';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { RiEyeCloseLine } from 'react-icons/ri';
 import axios from 'axios';
@@ -35,7 +39,8 @@ function SignUp() {
   const textColorDetails = useColorModeValue('navy.700', 'secondaryGray.600');
   const textColorBrand = useColorModeValue('brand.500', 'white');
   const brandStars = useColorModeValue('brand.500', 'brand.400');
-  const [show, setShow] = useState(false);
+
+  const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const [username, setUsername] = useState();
   const [name, setName] = useState();
@@ -122,18 +127,19 @@ function SignUp() {
       }
     }
   };
+
   return (
-    <DefaultAuth illustrationBackground={illustration} image={illustration}>
+    <CenteredAuth
+      image={'linear-gradient(135deg, #868CFF 0%, #4318FF 100%)'}
+      cardTop={{ base: '140px', md: '14vh' }}
+      cardBottom={{ base: '50px', lg: '100px' }}
+    >
       <Flex
-        w="100%"
         maxW="max-content"
         mx={{ base: 'auto', lg: '0px' }}
         me="auto"
-        h="fit-content"
         justifyContent="center"
-        mb={{ base: '30px', md: '60px' }}
-        px={{ base: '25px', md: '0px' }}
-        mt={{ base: '40px', md: '8vh' }}
+        px={{ base: '20px', md: '0px' }}
         flexDirection="column"
       >
         <Box me="auto">
@@ -144,6 +150,15 @@ function SignUp() {
           >
             Sign Up
           </Heading>
+          <Text
+            mb="36px"
+            ms="4px"
+            color={textColorSecondary}
+            fontWeight="400"
+            fontSize="md"
+          >
+            Enter your email and password to sign up!
+          </Text>
         </Box>
         <Flex
           zIndex="2"
@@ -156,6 +171,9 @@ function SignUp() {
           me="auto"
           mb={{ base: '20px', md: 'auto' }}
         >
+          <Flex align="center" mb="25px">
+            <HSeparator />
+          </Flex>
           <FormControl>
             <SimpleGrid
               columns={{ base: '1', md: '2' }}
@@ -391,7 +409,7 @@ function SignUp() {
           </Flex>
         </Flex>
       </Flex>
-    </DefaultAuth>
+    </CenteredAuth>
   );
 }
 

@@ -1,30 +1,9 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   ____  ____   ___  
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| |  _ \|  _ \ / _ \ 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || |  | |_) | |_) | | | |
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |  |  __/|  _ <| |_| |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___| |_|   |_| \_\\___/ 
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI Dashboard PRO - v1.0.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/pro/
-* Copyright 2022 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 // Chakra imports
 import {
   Box,
   Button,
   Flex,
+  Icon,
   SimpleGrid,
   Stack,
   Tab,
@@ -34,12 +13,18 @@ import {
   Tabs,
   Text,
   useColorModeValue,
+  useTheme,
 } from '@chakra-ui/react';
+import axios from 'axios';
+import { MultiSelect, useMultiSelect } from 'chakra-multiselect';
 // Custom components
 import Card from 'components/card/Card';
 import InputField from 'components/fields/InputField';
 import TextField from 'components/fields/TextField';
 import React, { useState } from 'react';
+import { MdOutlineCloudUpload } from 'react-icons/md';
+import Dropzone from 'views/user/main/Uploads/newUpload/components/Dropzone';
+
 export default function NewUser() {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const [activeBullets, setActiveBullets] = useState({
@@ -47,10 +32,58 @@ export default function NewUser() {
     address: false,
     profile: false,
   });
+  const theme = useTheme();
+
+  const [lineColor, setLineColor] = useState(theme.colors.brand[500]);
+  //eslint-disable-next-line
+  const [lineColorDark, setLineColorDark] = useState(theme.colors.brand[400]);
+  const brand = useColorModeValue(lineColor, lineColorDark);
 
   const userTab = React.useRef();
   const addressTab = React.useRef();
   const profileTab = React.useRef();
+
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  const { value, options, onChange } = useMultiSelect({
+    value: [],
+    options: ['arab', 'french', 'english'],
+  });
+  const [newUserData, setNewUserData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+
+  const handleNameChange = (e) => {
+    setNewUserData({ ...newUserData, name: e.target.value });
+  };
+
+  const handleEmailChange = (e) => {
+    setNewUserData({ ...newUserData, email: e.target.value });
+  };
+  const handlePhoneChange = (e) => {
+    setNewUserData({ ...newUserData, phone: e.target.value });
+  };
+
+  const handleCreateUser = async () => {
+    const userData = {
+      ...newUserData,
+      languages: value.map((option) => option.value),
+    };
+    console.log('Creating user with data:', userData);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+      const response = await axios.post('/employee/', userData, config);
+
+      if (response.status === 200) {
+        console.log('Employee Created successfully');
+      }
+    } catch (error) {
+      console.error('Error Creating Employee:', error);
+    }
+  };
 
   return (
     <Flex
@@ -75,151 +108,6 @@ export default function NewUser() {
         display="flex"
         flexDirection="column"
       >
-        <TabList
-          display="flex"
-          alignItems="center"
-          alignSelf="center"
-          justifySelf="center"
-        >
-          <Tab
-            _focus={{ border: '0px', boxShadow: 'unset' }}
-            ref={userTab}
-            w={{ sm: '120px', md: '250px', lg: '300px' }}
-            onClick={() =>
-              setActiveBullets({
-                user: true,
-                address: false,
-                profile: false,
-              })
-            }
-          >
-            <Flex
-              direction="column"
-              justify="center"
-              align="center"
-              position="relative"
-              _before={{
-                content: "''",
-                width: { sm: '120px', md: '250px', lg: '300px' },
-                height: '3px',
-                bg: activeBullets.address ? 'white' : 'brand.400',
-                left: { sm: '12px', md: '30px' },
-                top: {
-                  sm: activeBullets.user ? '6px' : '4px',
-                  md: null,
-                },
-                position: 'absolute',
-                bottom: activeBullets.user ? '40px' : '38px',
-
-                transition: 'all .3s ease',
-              }}
-            >
-              <Box
-                zIndex="1"
-                border="2px solid"
-                borderColor={activeBullets.user ? 'white' : 'brand.400'}
-                bgGradient="linear(to-b, brand.400, brand.600)"
-                w="16px"
-                h="16px"
-                mb="8px"
-                borderRadius="50%"
-              />
-              <Text
-                color={activeBullets.user ? 'white' : 'gray.300'}
-                fontWeight={activeBullets.user ? 'bold' : 'normal'}
-                display={{ sm: 'none', md: 'block' }}
-              >
-                User Info
-              </Text>
-            </Flex>
-          </Tab>
-          <Tab
-            _focus={{ border: '0px', boxShadow: 'unset' }}
-            ref={addressTab}
-            w={{ sm: '120px', md: '250px', lg: '300px' }}
-            onClick={() =>
-              setActiveBullets({
-                user: true,
-                address: true,
-                profile: false,
-              })
-            }
-          >
-            <Flex
-              direction="column"
-              justify="center"
-              align="center"
-              position="relative"
-              _before={{
-                content: "''",
-                width: { sm: '120px', md: '250px', lg: '300px' },
-                height: '3px',
-                bg: activeBullets.profile ? 'white' : 'brand.400',
-                left: { sm: '12px', md: '32px' },
-                top: '6px',
-                position: 'absolute',
-                bottom: activeBullets.address ? '40px' : '38px',
-
-                transition: 'all .3s ease',
-              }}
-            >
-              <Box
-                zIndex="1"
-                border="2px solid"
-                borderColor={activeBullets.address ? 'white' : 'brand.400'}
-                bgGradient="linear(to-b, brand.400, brand.600)"
-                w="16px"
-                h="16px"
-                mb="8px"
-                borderRadius="50%"
-              />
-              <Text
-                color={activeBullets.address ? 'white' : 'gray.300'}
-                fontWeight={activeBullets.address ? 'bold' : 'normal'}
-                display={{ sm: 'none', md: 'block' }}
-              >
-                Address
-              </Text>
-            </Flex>
-          </Tab>
-          <Tab
-            _focus={{ border: '0px', boxShadow: 'unset' }}
-            ref={profileTab}
-            w={{ sm: '120px', md: '250px', lg: '300px' }}
-            onClick={() =>
-              setActiveBullets({
-                user: true,
-                address: true,
-                profile: true,
-              })
-            }
-          >
-            <Flex
-              direction="column"
-              justify="center"
-              align="center"
-              position="relative"
-            >
-              <Box
-                zIndex="1"
-                border="2px solid"
-                borderColor={activeBullets.profile ? 'white' : 'brand.400'}
-                bgGradient="linear(to-b, brand.400, brand.600)"
-                w="16px"
-                h="16px"
-                mb="8px"
-                borderRadius="50%"
-              />
-              <Text
-                color={activeBullets.profile ? 'white' : 'gray.300'}
-                fontWeight={activeBullets.profile ? 'bold' : 'normal'}
-                display={{ sm: 'none', md: 'block' }}
-              >
-                Profile
-              </Text>
-            </Flex>
-          </Tab>
-        </TabList>
         <TabPanels mt="24px" maxW={{ md: '90%', lg: '100%' }} mx="auto">
           <TabPanel
             w={{ sm: '330px', md: '700px', lg: '850px' }}
@@ -237,37 +125,39 @@ export default function NewUser() {
                       mb="0px"
                       id="first"
                       placeholder="eg. Esthera"
-                      label="First Name"
+                      label="Full Name"
+                      value={newUserData.name}
+                      onChange={handleNameChange}
                     />
-                    <InputField
-                      mb="0px"
-                      id="last"
-                      placeholder="eg. Peterson"
-                      label="Last Name"
-                    />
-                    <InputField
-                      mb="0px"
-                      id="Company"
-                      placeholder="eg. Simmmple"
-                      label="Company"
-                    />
+
                     <InputField
                       mb="0px"
                       id="Email"
                       placeholder="eg. hello@simmmple.com"
                       label="Email Address"
-                    />
-                    <InputField
-                      mb="0px"
-                      id="Password"
-                      placeholder="4030120241"
-                      label="Password"
+                      value={newUserData.email}
+                      onChange={handleEmailChange}
                     />
                     <InputField
                       mb="0px"
                       id="Confirm"
                       placeholder="4030120241"
-                      label="Confirm Password"
+                      label="Phone"
+                      value={newUserData.phone}
+                      onChange={handlePhoneChange}
+                    />
+                    <MultiSelect
+                      outline="2px solid transparent"
+                      position="relative"
+                      outlineOffset="2px"
+                      padding="20px"
+                      fontWeight="500"
+                      height="44px"
+                      options={options}
+                      value={value}
+                      label="Choose or create items"
+                      onChange={onChange}
+                      create
                     />
                   </SimpleGrid>
                 </Stack>
@@ -278,128 +168,7 @@ export default function NewUser() {
                     borderRadius="16px"
                     w={{ base: '128px', md: '148px' }}
                     h="46px"
-                    ms="auto"
-                    onClick={() => addressTab.current.click()}
-                  >
-                    Next
-                  </Button>
-                </Flex>
-              </Flex>
-            </Card>
-          </TabPanel>
-          <TabPanel
-            w={{ sm: '330px', md: '700px', lg: '850px' }}
-            p="0px"
-            mx="auto"
-          >
-            <Card p="30px">
-              <Text color={textColor} fontSize="2xl" fontWeight="700" mb="20px">
-                Address
-              </Text>
-              <Flex direction="column" w="100%">
-                <Stack direction="column" spacing="20px" mb="20px">
-                  <InputField
-                    mb="0px"
-                    id="add1"
-                    placeholder="eg. Main Street 203"
-                    label="Address Line 1"
-                  />
-                  <InputField
-                    mb="0px"
-                    id="add2"
-                    placeholder="eg. Apartment, Floor"
-                    label="Address Line 2"
-                  />
-                  <SimpleGrid columns={{ base: 1, md: 2 }} gap="20px">
-                    <InputField
-                      mb="0px"
-                      id="city"
-                      placeholder="eg. Miami"
-                      label="City"
-                    />
-                    <SimpleGrid columns={{ base: 1, md: 2 }} gap="20px">
-                      <InputField
-                        mb="0px"
-                        id="add2"
-                        placeholder="Florida"
-                        label="State"
-                      />
-                      <InputField
-                        mb="0px"
-                        id="zip"
-                        placeholder="eg. Apartment, Floor"
-                        label="ZIP"
-                      />
-                    </SimpleGrid>
-                  </SimpleGrid>
-                </Stack>
-                <Flex justify="space-between">
-                  <Button
-                    variant="light"
-                    fontSize="sm"
-                    borderRadius="16px"
-                    w={{ base: '128px', md: '148px' }}
-                    h="46px"
-                    onClick={() => userTab.current.click()}
-                  >
-                    Prev
-                  </Button>
-                  <Button
-                    variant="darkBrand"
-                    fontSize="sm"
-                    borderRadius="16px"
-                    w={{ base: '128px', md: '148px' }}
-                    h="46px"
-                    ms="auto"
-                    onClick={() => profileTab.current.click()}
-                  >
-                    Next
-                  </Button>
-                </Flex>
-              </Flex>
-            </Card>
-          </TabPanel>
-          <TabPanel
-            w={{ sm: '330px', md: '700px', lg: '850px' }}
-            p="0px"
-            mx="auto"
-          >
-            <Card p="30px">
-              <Text color={textColor} fontSize="2xl" fontWeight="700" mb="20px">
-                Profile
-              </Text>
-              <Flex direction="column" w="100%">
-                <Stack direction="column" spacing="20px">
-                  <InputField
-                    id="profile email"
-                    placeholder="Your primary email address"
-                    label="Profile Email"
-                    mb="0px"
-                  />
-                  <TextField
-                    minH="150px"
-                    id="bio"
-                    placeholder="Enter a few words about you"
-                    label="Bio"
-                  />
-                </Stack>
-                <Flex justify="space-between" mt="24px">
-                  <Button
-                    variant="light"
-                    fontSize="sm"
-                    borderRadius="16px"
-                    w={{ base: '128px', md: '148px' }}
-                    h="46px"
-                    onClick={() => addressTab.current.click()}
-                  >
-                    Prev
-                  </Button>
-                  <Button
-                    variant="darkBrand"
-                    fontSize="sm"
-                    borderRadius="16px"
-                    w={{ base: '128px', md: '148px' }}
-                    h="46px"
+                    onClick={handleCreateUser}
                   >
                     Submit
                   </Button>

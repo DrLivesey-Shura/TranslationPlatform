@@ -73,6 +73,7 @@ const translationDemandSchema = new mongoose.Schema(
     adminValidationDate: {
       type: Date,
     },
+    isUrgent: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -142,10 +143,21 @@ const userSchema = mongoose.Schema(
   }
 );
 
-userSchema.pre("findOneAndRemove", async function (next) {
-  const user = this; // 'this' refers to the document being removed
+const employeSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
+    phone: { type: String, required: true },
+    languages: { type: [String], required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-  // Access the user's uploads and remove the associated upload from the Upload schema
+userSchema.pre("findOneAndRemove", async function (next) {
+  const user = this;
+
   await Promise.all(
     user.uploads.map(async (upload) => {
       await mongoose.model("Upload").findByIdAndRemove(upload._id);
@@ -170,6 +182,7 @@ userSchema.pre("save", async function (next) {
 });
 
 const User = mongoose.model("User", userSchema);
+const Employe = mongoose.model("Employe", employeSchema);
 const Upload = mongoose.model("Upload", uploadSchema);
 const uploadTrasnlated = mongoose.model(
   "UploadTrasnlated",
@@ -182,6 +195,7 @@ const translationDemand = mongoose.model(
 
 module.exports = {
   User,
+  Employe,
   Upload,
   translationDemand,
   uploadTrasnlated,

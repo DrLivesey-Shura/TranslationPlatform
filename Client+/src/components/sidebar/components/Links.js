@@ -41,13 +41,7 @@ export function SidebarLinks(props) {
   const createLinks = (routes) => {
     routes = routes.filter((route) => route.name !== 'Authentication');
     routes = routes.filter((route) => route.name !== 'Others');
-    routes.forEach((section) => {
-      if (section.name === 'Uploads') {
-        section.items = section.items.filter(
-          (item) => item.name !== 'Upload Details',
-        );
-      }
-    });
+    routes = routes.filter((route) => route.name !== 'Upload Details');
 
     return routes.map((route, key) => {
       if (route.collapse) {

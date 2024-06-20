@@ -51,7 +51,7 @@ const getAllTranslationDemands = async (req, res) => {
     // Use populate to get related Upload information
     const allTranslationDemands = await translationDemand
       .find()
-      .populate("uploadId", "file")
+      .populate("uploadId", "file numPages numWords")
       .populate("userId", "name pic email");
 
     res.status(200).json(allTranslationDemands);

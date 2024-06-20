@@ -34,7 +34,6 @@ function AuthCentered(props) {
         bgGradient="linear(to-b, brand.400, brand.600)"
         mx={{ md: 'auto' }}
       />
-      <Navbar />
       <Card
         w={{ base: '100%', md: 'max-content' }}
         h="max-content"
@@ -51,7 +50,6 @@ function AuthCentered(props) {
             textAlign="center"
             justifyContent="center"
             align="center"
-            mt="125px"
             mb="30px"
           >
             <Text fontSize="4xl" color="white" fontWeight="bold">

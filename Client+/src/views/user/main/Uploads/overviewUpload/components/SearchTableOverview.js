@@ -12,7 +12,6 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import React, { useRef, useState } from 'react';
 import {
   AlertDialog,
@@ -29,7 +28,6 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
     'LANGUAGE',
     'DATE',
     'ESTIMATED DATE',
-    'TRANSLATOR',
     'STATUS',
     'PAYMENT',
     'ACTION',
@@ -37,7 +35,6 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-  const brandColor = useColorModeValue('brand.500', 'brand.400');
 
   const [isOpen, setIsOpen] = useState({});
   const onClose = (index) => {
@@ -76,9 +73,14 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
 
   const handleDownload = async (filename) => {
     const modifiedFilename = filename.replace(/(\.[\w\d_-]+)$/i, '_tr$1');
+    console.log(modifiedFilename);
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
       const response = await axios.get(
         `/upload/download-translated/${modifiedFilename}`,
+        config,
         {
           responseType: 'blob', // Receive response as a Blob
         },
@@ -106,16 +108,8 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
         direction="column"
         w="100%"
         overflowX={{ sm: 'scroll', lg: 'hidden' }}
+        my="20px"
       >
-        <Flex
-          align={{ sm: 'flex-start', lg: 'flex-start' }}
-          justify={{ sm: 'flex-start', lg: 'flex-start' }}
-          w="100%"
-          px="22px"
-          mb="36px"
-        >
-          <SearchBar h="44px" w={{ lg: '390px' }} borderRadius="16px" />
-        </Flex>
         <Table variant="simple" color="gray.500" mb="24px">
           <Thead>
             <Tr>
@@ -217,21 +211,7 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
                           </Text>
                         </Flex>
                       </Td>
-                      <Td
-                        fontSize={{ sm: '14px' }}
-                        minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-                        borderColor={borderColor}
-                      >
-                        <Flex align="center">
-                          <Text
-                            color={textColor}
-                            fontSize="sm"
-                            fontWeight="700"
-                          >
-                            Tou La
-                          </Text>
-                        </Flex>
-                      </Td>
+
                       <Td
                         fontSize={{ sm: '14px' }}
                         minW={{ sm: '150px', md: '200px', lg: 'auto' }}
@@ -279,7 +259,7 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
                             </Flex>
                           </Td>
                         )}
-                      {translations[i].status == 'Done' && (
+                      {translations[i].status === 'Done' && (
                         <Td
                           fontSize={{ sm: '14px' }}
                           minW={{ sm: '150px', md: '200px', lg: 'auto' }}
@@ -297,7 +277,7 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
                         </Td>
                       )}
 
-                      {translations[i].status == 'Working' && (
+                      {translations[i].status === 'Working' && (
                         <Td
                           fontSize={{ sm: '14px' }}
                           minW={{ sm: '150px', md: '200px', lg: 'auto' }}
@@ -313,7 +293,7 @@ function SearchTable2({ user, translations, fileInfo, onDelete }) {
                           </Flex>
                         </Td>
                       )}
-                      {translations[i].adminValidationStatus == 'Rejected' && (
+                      {translations[i].adminValidationStatus === 'Rejected' && (
                         <Td
                           fontSize={{ sm: '14px' }}
                           minW={{ sm: '150px', md: '200px', lg: 'auto' }}

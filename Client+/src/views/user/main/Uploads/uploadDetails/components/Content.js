@@ -81,7 +81,11 @@ export default function Content(props) {
               color="secondaryGray.600"
               maxW="322px"
             >
-              Estimated Date :{file.estimatedDate}
+              Estimated Date :{' '}
+              {new Date(translation.estimatedDate).toLocaleString('en-US', {
+                dateStyle: 'full',
+                timeStyle: 'long',
+              })}{' '}
             </Text>
           </Stack>
         </Box>
@@ -110,7 +114,7 @@ export default function Content(props) {
               Paid to bost
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              0$
+              {(file.numWords * 1.5).toFixed(2)} DZD
             </Text>
           </Flex>
           <HSeparator my="20px" />
@@ -125,7 +129,7 @@ export default function Content(props) {
               Amount to pay
             </Text>
             <Text color={textColor} fontSize="lg" fontWeight="700" maxW="292px">
-              {(file.numWords * 1.5).toFixed(2)} DZD
+              {(file.numWords * 1.5).toFixed(2) * 2} DZD
             </Text>
           </Flex>
         </Box>

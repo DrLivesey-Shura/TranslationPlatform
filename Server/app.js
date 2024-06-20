@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require("./db.js");
 const UserRoutes = require("./Routes/UserRoutes.js");
+const EmployeeRoutes = require("./Routes/EmployeeRoutes.js");
 const UploadRoutes = require("./Routes/UploadRoutes.js");
 const TranslationsRoutes = require("./Routes/TranslationsRoutes.js");
 const BraintreeRoutes = require("./Routes/braintree.js");
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/braintree", BraintreeRoutes);
 app.use("/user", UserRoutes);
+app.use("/employee", EmployeeRoutes);
 app.use("/upload", UploadRoutes);
 app.use("/translation-demands", TranslationsRoutes);
 

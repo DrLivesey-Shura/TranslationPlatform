@@ -24,10 +24,10 @@ export default function Dashboard(props) {
   const [hovered, setHovered] = useState(false);
   // functions for changing the states from components
   const getRoute = () => {
-    return window.location.pathname !== '/user/full-screen-maps';
+    return window.location.pathname !== '/admin/full-screen-maps';
   };
   const getActiveRoute = (routes) => {
-    let activeRoute = 'Main Dashboard';
+    let activeRoute = 'Admin Dashboard';
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].items);
@@ -64,7 +64,7 @@ export default function Dashboard(props) {
   };
   const getRoutes = (routes) => {
     return routes.map((route, key) => {
-      if (route.layout === '/user') {
+      if (route.layout === '/admin') {
         return (
           <Route path={`${route.path}`} element={route.component} key={key} />
         );
@@ -150,7 +150,10 @@ export default function Dashboard(props) {
             >
               <Routes>
                 {getRoutes(routes)}
-                <Route path="/user" element={<Navigate to="/user" replace />} />
+                <Route
+                  path="/"
+                  element={<Navigate to="/admin/dashboards" replace />}
+                />
               </Routes>
             </Box>
           ) : null}

@@ -1,6 +1,7 @@
 // Chakra imports
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
+import Card from 'components/card/Card';
 import React, { useEffect, useState } from 'react';
 import SearchTableOverview from 'views/user/main/Uploads/overviewUpload/components/SearchTableOverview';
 
@@ -51,24 +52,26 @@ export default function UploadOverview() {
 
   return (
     <Flex direction="column" pt={{ sm: '125px', lg: '75px' }}>
-      {!isLoading ? (
-        <SearchTableOverview
-          user={user}
-          translations={userTranslations}
-          fileInfo={fileInfo}
-          onDelete={handleDelete}
-        />
-      ) : (
-        <Box display="flex" justifyContent="center" mt="20">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
+      <Card>
+        {!isLoading ? (
+          <SearchTableOverview
+            user={user}
+            translations={userTranslations}
+            fileInfo={fileInfo}
+            onDelete={handleDelete}
           />
-        </Box>
-      )}
+        ) : (
+          <Box display="flex" justifyContent="center" mt="20">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Box>
+        )}
+      </Card>
     </Flex>
   );
 }

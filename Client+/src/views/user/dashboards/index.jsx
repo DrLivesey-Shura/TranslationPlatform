@@ -22,36 +22,9 @@ export default function Default({ user }) {
 
   return (
     <Flex pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Flex flexDirection="row" my="20px">
-        <Flex flexDirection="column" width="45%">
-          <Box mx="12px" direction="column" mb="10px">
-            <Card>
-              <Flex
-                flexDirection="column"
-                alignItems="center"
-                mx="20px"
-                py="20px"
-              >
-                <Text
-                  mb="18px"
-                  fontSize="lg"
-                  fontWeight="700"
-                  lineHeight="100%"
-                >
-                  Hello {user.name}
-                </Text>
-                <Text>
-                  Welcome to Tou La Translation Platform! This is your gateway
-                  to seamless and accurate translation services. Our platform is
-                  designed to provide a reliable and efficient solution for all
-                  your translation needs. Whether you require document
-                  translation, website localization, or multilingual support,
-                  Tou La is here to assist you.
-                </Text>
-              </Flex>
-            </Card>
-          </Box>
-          <Box mx="12px" direction="column">
+      <Flex flexDirection={{ md: 'row', sm: 'column' }} my="20px">
+        <Flex flexDirection="column" width={{ base: '45%', sm: '95%' }}>
+          <Box mx="20px" direction="column">
             <Card>
               <Flex flexDirection="column" mx="20px" py="20px">
                 <Text
@@ -61,28 +34,19 @@ export default function Default({ user }) {
                   fontWeight="700"
                   lineHeight="100%"
                 >
-                  User Information <br />
+                  Your Informations <br />
                 </Text>
-                <Box>
-                  <Text fontSize="18px">
-                    Full Name &nbsp;: &nbsp; {user.name} <br />
-                  </Text>
-                  <Text fontSize="18px">
-                    Email &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: &nbsp;{' '}
-                    {user.email}
-                  </Text>
-                  <Text fontSize="18px">
-                    Level &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;: &nbsp; {user.level}{' '}
-                  </Text>
-                  <Text fontSize="18px">
-                    Phone &nbsp; &nbsp; &nbsp;&nbsp;: &nbsp; {user.phone}{' '}
-                  </Text>
+                <Box display="flex" flexDirection="column">
+                  <Text fontSize="18px">{user.name}</Text>
+                  <Text fontSize="18px">{user.email}</Text>
+                  <Text fontSize="18px">{user.level} </Text>
+                  <Text fontSize="18px">{user.phone} </Text>
                 </Box>
               </Flex>
             </Card>
           </Box>
         </Flex>
-        <Flex width="45%">
+        <Flex mt={{ md: '0', sm: '25px' }} width="95%">
           <Card mx="12px">
             <Flex flexDirection="column">
               <Text

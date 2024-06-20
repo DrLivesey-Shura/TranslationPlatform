@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const pdfParse = require("pdf-parse");
 const sendEmail = require("../Middleware/emailService");
+
 const fetchUploads = asyncHandler(async (req, res) => {
   try {
     const allPhotos = await Upload.find().sort({ createdAt: "descending" });
@@ -128,6 +129,7 @@ const downloadUpload = asyncHandler(async (req, res) => {
 
 const downloadTranslatedUpload = asyncHandler(async (req, res) => {
   const filename = req.params.filename;
+  console.log(filename);
   const filePath = path.join("translatedUploads", filename);
   // Check if the file exists
   fs.access(filePath, fs.constants.F_OK, (err) => {

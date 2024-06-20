@@ -1,8 +1,8 @@
 // Chakra imports
-import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 
 // Custom components
-import { HorizonLogo } from 'components/icons/Icons';
+// import { HorizonLogo } from 'components/icons/Icons';
 import { HSeparator } from 'components/separator/Separator';
 
 export function SidebarBrand(props) {
@@ -11,35 +11,35 @@ export function SidebarBrand(props) {
   let logoColor = useColorModeValue('navy.700', 'white');
 
   return (
-    <Flex alignItems="center" flexDirection="column">
-      <HorizonLogo
-        h="26px"
-        w="175px"
-        my="32px"
-        color={logoColor}
-        display={
-          mini === false
-            ? 'block'
-            : mini === true && hovered === true
-            ? 'block'
-            : 'none'
-        }
-      />
+    <Flex alignItems="center" flexDirection="row">
+      <Box display={mini ? (hovered ? 'block' : 'none') : 'block'} mr={2}>
+        <Avatar
+          src={require('../../../assets/img/home/logo.jpg')}
+          h="56px"
+          w="75px"
+          color={logoColor}
+          alt="Logo"
+        />
+      </Box>
       <Text
-        display={
-          mini === false
-            ? 'none'
-            : mini === true && hovered === true
-            ? 'none'
-            : 'block'
-        }
-        fontSize={'30px'}
+        fontSize="20px"
+        h="26px"
+        w="200px"
+        my="22px"
+        color={logoColor}
+        display={mini ? (hovered ? 'block' : 'none') : 'block'}
+      >
+        Translation Services
+      </Text>
+      <Text
+        display={!mini || (mini && hovered) ? 'none' : 'block'}
+        fontSize="30px"
         fontWeight="800"
         color={logoColor}
+        ml={2}
       >
         H
       </Text>
-      <HSeparator mb="20px" />
     </Flex>
   );
 }
