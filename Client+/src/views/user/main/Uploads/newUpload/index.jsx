@@ -140,22 +140,21 @@ export default function NewUpload() {
   };
 
   useEffect(() => {
-    if (file && file.numPages <= 15 && !isUrgent) {
+    if (file && file.numWords <= 1000 && !isUrgent) {
       let calculatedPrice = (file.numWords * 2).toFixed(2);
       setPrice(calculatedPrice);
     }
-    if (file && file.numPages <= 15 && isUrgent) {
+    if (file && file.numWords <= 1000 && isUrgent) {
       let calculatedPrice = (file.numWords * 2).toFixed(2) * 2;
       setPrice(calculatedPrice);
     }
-    if (file && file.numPages > 15 && isUrgent) {
-      let calculatedPrice = (file.numWords * 2).toFixed(2) * 2;
-      calculatedPrice -= 100 * file.numPages;
+    if (file && file.numWords > 1000 && isUrgent) {
+      let calculatedPrice =
+        ((file.numWords - 1000) * 1.5 + 2000).toFixed(2) * 2;
       setPrice(calculatedPrice);
     }
-    if (file && file.numPages > 15 && !isUrgent) {
-      let calculatedPrice = (file.numWords * 2).toFixed(2);
-      calculatedPrice -= 100 * file.numPages;
+    if (file && file.numWords > 1000 && !isUrgent) {
+      let calculatedPrice = ((file.numWords - 1000) * 1.5 + 2000).toFixed(2);
       setPrice(calculatedPrice);
     }
   }, [file]);

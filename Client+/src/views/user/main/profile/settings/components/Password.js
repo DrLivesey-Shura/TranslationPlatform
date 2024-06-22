@@ -21,6 +21,7 @@ export default function Settings(props) {
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'secondaryGray.600';
+
   const { user } = props;
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -80,7 +81,7 @@ export default function Settings(props) {
             <InputGroup size="md" my="15px">
               <Input
                 mb="25px"
-                textColor="white"
+                color={textColorPrimary}
                 outline="2px solid transparent"
                 outlineOffset="2px"
                 appearance="none"
@@ -116,7 +117,7 @@ export default function Settings(props) {
             <InputGroup size="md" my="15px">
               <Input
                 mb="25px"
-                textColor="white"
+                color={textColorPrimary}
                 outline="2px solid transparent"
                 outlineOffset="2px"
                 appearance="none"
@@ -165,7 +166,7 @@ export default function Settings(props) {
                 paddingInlineEnd="1rem"
                 id="confirm"
                 type={show3 ? 'text' : 'password'}
-                textColor="white"
+                color={textColorPrimary}
                 label="New Password Confirmation"
                 placeholder="***********"
                 value={confirmPassword}
