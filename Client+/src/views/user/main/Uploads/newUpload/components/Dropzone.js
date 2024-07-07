@@ -15,6 +15,7 @@ function Dropzone({
   const borderColor = useColorModeValue('gray.300', 'whiteAlpha.100');
   const [file, setFiles] = useState();
   const textColor = useColorModeValue('secondaryGray.900', 'white');
+  const wordsPerDay = 200;
 
   const handleUpload = async () => {
     if (!file) {
@@ -60,14 +61,13 @@ function Dropzone({
   }, [file]);
 
   const calculateEstimatedDate = (numWords) => {
-    const wordsPerDay = 200;
     let daysNeeded = Math.ceil(numWords / wordsPerDay);
     if (isUrgent) {
       daysNeeded = Math.ceil(daysNeeded / 2);
     }
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + daysNeeded);
-    return currentDate.toISOString(); // Returns the date in ISO format
+    return currentDate.toISOString();
   };
 
   return (

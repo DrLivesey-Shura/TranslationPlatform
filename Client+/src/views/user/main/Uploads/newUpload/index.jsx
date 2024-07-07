@@ -509,8 +509,13 @@ export default function NewUpload() {
                               dateStyle: 'full',
                               timeStyle: 'long',
                             },
-                          )}{' '}
-                        </Text>{' '}
+                          )}
+                          {' ( '}
+                          {isUrgent
+                            ? Math.ceil(file.numWords / 200 / 2)
+                            : Math.ceil(file.numWords / 200)}
+                          {' days ) '}{' '}
+                        </Text>
                         <Text>
                           Is Your demand Urgent: {isUrgent ? 'Yes' : 'No'}
                         </Text>

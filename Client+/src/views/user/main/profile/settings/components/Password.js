@@ -78,8 +78,10 @@ export default function Settings(props) {
         </Flex>
         <FormControl>
           <Flex flexDirection="column">
-            <InputGroup size="md" my="15px">
+            <InputGroup flexDirection="column" size="md">
+              <label>Old Password</label>
               <Input
+                mt="12px"
                 mb="25px"
                 color={textColorPrimary}
                 outline="2px solid transparent"
@@ -114,8 +116,10 @@ export default function Settings(props) {
               </InputRightElement>
             </InputGroup>
 
-            <InputGroup size="md" my="15px">
+            <InputGroup flexDirection="column" size="md">
+              <label>New Password</label>
               <Input
+                mt="12px"
                 mb="25px"
                 color={textColorPrimary}
                 outline="2px solid transparent"
@@ -150,8 +154,10 @@ export default function Settings(props) {
                 />
               </InputRightElement>
             </InputGroup>
-            <InputGroup size="md" my="15px">
+            <InputGroup flexDirection="column" size="md">
+              <label>Confirm New Password</label>
               <Input
+                mt="12px"
                 mb="25px"
                 outline="2px solid transparent"
                 outlineOffset="2px"

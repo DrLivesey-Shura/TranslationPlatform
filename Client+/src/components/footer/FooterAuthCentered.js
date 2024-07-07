@@ -28,6 +28,7 @@ export default function Footer() {
       px={{ base: '0px', xl: '0px' }}
       pb="30px"
       mx="auto"
+      my="12px"
     >
       <Text
         color={textColor}
@@ -40,7 +41,7 @@ export default function Footer() {
         {' '}
         &copy; {1900 + new Date().getYear()}
         <Text as="span" fontWeight="500" ms="4px">
-          Transaltion Services. All Rights Reserved.
+          Progress. All Rights Reserved.
         </Text>
       </Text>
       {/* <List display='flex'>
